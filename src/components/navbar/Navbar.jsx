@@ -1,8 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./navbar.scss"
 
 const Navbar = ({ type }) => {
+
+  const navigate = useNavigate();
+  
     let head;
   switch (type) {
     case "dashboard":
@@ -29,6 +32,11 @@ const Navbar = ({ type }) => {
       break;
   }
 
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
   return (
     <>
     <div className="navbar">
@@ -36,9 +44,9 @@ const Navbar = ({ type }) => {
             <h2>{head.name}</h2>
         </div>
         <div className="right-nav">
-          <Link to="/">
+          <button onClick={logout}>
           <img src={require("../../assets/shutdown.png")} alt="" />
-          </Link>
+          </button>
         </div>
     </div>
     </>

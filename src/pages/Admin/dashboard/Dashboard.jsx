@@ -16,7 +16,7 @@ const Dashboard = () => {
       <Navbar type="dashboard"/>
       </div>
       <div className="bottom-dash">
-        {/* <h1><DashboardData/></h1> */}
+        <DashboardData/>
       </div>
     </div>
     </div>

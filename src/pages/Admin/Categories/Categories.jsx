@@ -2,6 +2,7 @@ import React from "react";
 import "./categories.scss";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import Navbar from "../../../components/navbar/Navbar";
+import CreateCategory from "./components/CreateCategory";
 
 const Categories = () => {
   return (
@@ -14,7 +15,7 @@ const Categories = () => {
           <Navbar type="categories" />
         </div>
         <div className="bottom-cat">
-          <h1>Categories content</h1>
+          <CreateCategory/>
         </div>
       </div>
     </div>

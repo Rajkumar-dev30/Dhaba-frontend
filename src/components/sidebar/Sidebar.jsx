@@ -1,8 +1,14 @@
 import React from "react";
 import "./sidebar.scss";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   return (
     <>
       <div className="sidebar">
@@ -19,7 +25,7 @@ const Sidebar = () => {
                 font: isActive ? "18px" : "16px",
               };
             }}
-            to="/dashboard"
+            to="/admin/dashboard"
           >
             Dashboard
           </NavLink>
@@ -32,7 +38,7 @@ const Sidebar = () => {
                 font: isActive ? "18px" : "16px",
               };
             }}
-            to="/categories"
+            to="/admin/categories"
           >
             Categories
           </NavLink>
@@ -44,7 +50,7 @@ const Sidebar = () => {
                 font: isActive ? "18px" : "16px",
               };
             }}
-            to="/products"
+            to="/admin/products"
           >
             Products
           </NavLink>
@@ -56,13 +62,13 @@ const Sidebar = () => {
                 font: isActive ? "18px" : "16px",
               };
             }}
-            to="/users"
+            to="/admin/users"
           >
             Users
           </NavLink>
         </div>
         <div className="last">
-          <Link to="/">Logout</Link>
+          <button onClick={logout}>Logout</button>
         </div>
       </div>
     </>
