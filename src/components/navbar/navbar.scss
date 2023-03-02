@@ -1,0 +1,16 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    width: 85vw;
+    padding: 0 2% 0 0;
+    background-color: lightgrey;
+    .right-nav{
+        img{
+            height: 25px;
+            width: 25x;
+            cursor: pointer;
+        }
+    }
+}
