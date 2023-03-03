@@ -1,0 +1,19 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th,
+  td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+    word-break: break-all; /* break the word when it reaches the width of the cell */
+    max-width: 0; /* make sure the cell doesn't expand more than the table width */
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    color: #000;
+  }
+  

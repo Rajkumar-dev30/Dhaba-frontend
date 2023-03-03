@@ -8,9 +8,6 @@ export const useLogin = () => {
 
   const login = async (userId, password) => {
     setError(null);
-    // let user = JSON.parse(localStorage.getItem("user"));
-    // const token = user.token;
-    // console.log(token)
     try {
       const data = await axios.post(
         `https://kingsdhabaserver.onrender.com/admin/login`,

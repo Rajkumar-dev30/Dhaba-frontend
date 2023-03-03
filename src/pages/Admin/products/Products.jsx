@@ -2,6 +2,7 @@ import React from 'react'
 import "./products.scss"
 import Sidebar from '../../../components/sidebar/Sidebar'
 import Navbar from '../../../components/navbar/Navbar'
+import ProductList from './components/ProductData'
 
 const Products = () => {
   return (
@@ -14,7 +15,7 @@ const Products = () => {
         <Navbar type="products"/>
       </div>
       <div className="bottom-product">
-        <h1>Products data</h1>
+        <ProductList/>
       </div>
     </div>
     </div>  )
