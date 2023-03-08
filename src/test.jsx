@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Modal } from "@mui/material";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CategoryEdit from "./components/categoryPopup/CategoryEdit";
+import "./pages/Admin/Categories/categories.scss";
 
-const ProductList = () => {
-  const [productData, setProductData] = useState([]);
-  const [productLength, setProductLength] = useState(0);
-  const [productName, setProductName] = useState("");
+const CategoriesList = () => {
+  const [categoryData, setCategoryData] = useState([]);
+  const [categoryLength, setCategoryLength] = useState(0);
+  const [categoryName, setCategoryName] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [foodType, setFoodType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [editCategoryId, setEditCategoryId] = useState(null);
 
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -22,50 +25,30 @@ const ProductList = () => {
     },
   };
 
-  const getProducts = async () => {
+  const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://kingsdhabaserver.onrender.com/product/all-products"
+        `${process.env.REACT_APP_API_URL}/category/get-category`
       );
       const offData = response.data;
-      const fullData = offData.products;
-      setProductData(fullData);
-    //   console.log(fullData)
-      if (fullData.length > 0) {
-        const length = fullData.length;
-        setProductLength(length);
-      }
+      const fullData = offData.response;
+      setCategoryData(fullData);
+      setCategoryLength(fullData.length);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getProducts();
+    getCategories();
   }, []);
 
-  const handleProductNameChange = (event) => {
-    setProductName(event.target.value);
+  const handleCategoryNameChange = (event) => {
+    setCategoryName(event.target.value);
   };
 
   const handleAvatarChange = (event) => {
     setAvatar(event.target.files[0]);
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
-  };
-
-  const handlecategoryIdChange = (event) => {
-    setCategoryId(event.target.value);
-  };
-
-  const handleFoodTypeChange = (event) => {
-    setFoodType(event.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -73,112 +56,122 @@ const ProductList = () => {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("productName", productName);
+    formData.append("categoryName", categoryName);
     formData.append("avatar", avatar);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("categoryId", categoryId);
-    formData.append("foodType", foodType);
 
     try {
       const response = await axios.post(
-        "https://kingsdhabaserver.onrender.com/product/create-product",
+        `${process.env.REACT_APP_API_URL}/category/create-category`,
         formData,
         config
       );
       console.log(response.data);
-      setProductName("");
+      setCategoryName("");
       setAvatar(null);
-      setDescription("");
-      setPrice("");
-      setCategoryId("");
-      setFoodType("");
-      document.getElementById("product-image").value = "";
-      getProducts();
-    } catch (err) {
-      console.log(err);
+      document.getElementById("category-image").value = "";
+      getCategories(); // call getCategories() after successful creation of new category
+    } catch (error) {
+      console.log(error);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleEdit = (_id) => {
+    setEditCategoryId(_id);
+    console.log(editCategoryId);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(
+      `${process.env.REACT_APP_API_URL}/category/delete-category/${id}`,
+      config
+    );
+    getCategories();
+  };
+
   return (
     <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categoryData.map((category, index) => (
+            <tr key={index}>
+              <td>
+                <img
+                  src={category.categoryImage}
+                  alt={category.categoryName}
+                  width="50"
+                  height="50"
+                />
+              </td>
+              <td>{category.categoryName}</td>
+              <td>{category.status}</td>
+              <td>
+                <BorderColorIcon
+                  sx={{ color: "blue", cursor: "pointer" }}
+                  onClick={() => handleEdit(category.id)}
+                />
+              </td>
+              <td>
+                <DeleteIcon
+                  sx={{ color: "red", cursor: "pointer" }}
+                  onClick={() => handleDelete(category.id)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="product-name">Product Name:</label>
+          <label htmlFor="category-name">Category Name:</label>
           <input
             type="text"
-            id="product-name"
-            value={productName}
-            onChange={handleProductNameChange}
+            id="category-name"
+            value={categoryName}
+            onChange={handleCategoryNameChange}
           />
         </div>
         <div>
-          <label htmlFor="product-image">Product Image:</label>
-          <input type="file" id="product-image" onChange={handleAvatarChange} />
-        </div>
-        <div>
-          <label htmlFor="product-description">Description:</label>
+          <label htmlFor="category-image">Category Image:</label>
           <input
-            type="text"
-            id="product-description"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="product-price">Price:</label>
-          <input
-            type="number"
-            id="product-price"
-            value={price}
-            onChange={handlePriceChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="product-categoryId">categoryId:</label>
-          <input
-            type="text"
-            id="product-categoryId"
-            value={categoryId}
-            onChange={handlecategoryIdChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="product-food-type">Food Type:</label>
-          <input
-            type="text"
-            id="product-food-type"
-            value={foodType}
-            onChange={handleFoodTypeChange}
+            type="file"
+            id="category-image"
+            onChange={handleAvatarChange}
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? "Loading..." : "Create Product"}
+          {loading ? "Loading..." : "Create Category"}
         </button>
       </form>
-      <h3>Total Products: {productLength}</h3>
-      <div className="getting-products">
-        {productData.map((product) => (
-          <div key={product._id}>
-            <img
-              src={`${product.productImage}`}
-              alt="product"
-              width="50"
-              height="50"
-            />
-            <p>Name: {product.productName}</p>
-            <p>Description: {product.description}</p>
-            <p>Price: {product.price}</p>
-            <p>categoryId: {product.categoryId}</p>
-            <p>Food Type: {product.foodType}</p>
-            <p>Status: {product.status}</p>
-          </div>
-        ))}
-      </div>
+
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <div>
+          <CategoryEdit
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            getCategories={getCategories}
+            categoryId={editCategoryId}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
 
-export default ProductList;
+export default CategoriesList;

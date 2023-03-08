@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./createcategory.scss";
-
+import { Modal } from "@mui/material";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CategoryEdit from "../../../../components/categoryPopup/CategoryEdit";
 const CategoriesList = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [categoryLength, setCategoryLength] = useState(0);
   const [categoryName, setCategoryName] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [editCategoryId, setEditCategoryId] = useState(null);
 
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -22,11 +27,12 @@ const CategoriesList = () => {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://kingsdhabaserver.onrender.com/category/get-category"
+        `${process.env.REACT_APP_API_URL}/category/get-category`
       );
       const offData = response.data;
       const fullData = offData.response;
       setCategoryData(fullData);
+      console.log(fullData);
       if (fullData.length > 0) {
         const length = fullData.length;
         setCategoryLength(length);
@@ -58,7 +64,7 @@ const CategoriesList = () => {
 
     try {
       const response = await axios.post(
-        "https://kingsdhabaserver.onrender.com/category/create-category",
+        "${process.env.REACT_APP_API_URL}/category/create-category",
         formData,
         config
       );
@@ -74,58 +80,107 @@ const CategoriesList = () => {
     }
   };
 
+  const handleEdit = (id) => {
+    setEditCategoryId(id);
+    setOpenModal(true);
+  };
+  
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(
+      `${process.env.REACT_APP_API_URL}/category/delete-category/${id}`,
+      config
+    );
+    getCategories();
+  };
+
   return (
     <div>
-  <form onSubmit={handleSubmit}>
-    <div>
-      <label htmlFor="category-name">Category Name:</label>
-      <input
-        type="text"
-        id="category-name"
-        value={categoryName}
-        onChange={handleCategoryNameChange}
-      />
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="category-name">Category Name:</label>
+          <input
+            type="text"
+            id="category-name"
+            value={categoryName}
+            onChange={handleCategoryNameChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="category-image">Category Image:</label>
+          <input
+            type="file"
+            id="category-image"
+            onChange={handleavatarChange}
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Loading..." : "Create Category"}
+        </button>
+      </form>
+      <h3>Total Categories: {categoryLength}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categoryData.map((cate) => {
+            return (
+              <>
+                <tr key={cate.id}>
+                  <td>
+                    <img
+                      src={`${cate.categoryImage}`}
+                      alt="category"
+                      width="50"
+                      height="50"
+                    />
+                  </td>
+                  <td>{cate.categoryName}</td>
+                  <td>{cate.status}</td>
+                  <td>
+                    <BorderColorIcon
+                      sx={{
+                        width: 15,
+                        height: 15,
+                        color: "blue",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleEdit(cate.id)}
+                    />
+                  </td>
+                  <td>
+                    <DeleteIcon
+                      sx={{
+                        width: 20,
+                        height: 20,
+                        color: "red",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleDelete(cate.id)}
+                    />
+                  </td>
+                  {openModal && editCategoryId === cate.id && (
+                <Modal onClose={handleCloseModal}>
+                  <CategoryEdit />
+                </Modal>
+              )}
+                </tr>
+              </>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
-    <div>
-      <label htmlFor="category-image">Category Image:</label>
-      <input
-        type="file"
-        id="category-image"
-        onChange={handleavatarChange}
-      />
-    </div>
-    <button type="submit" disabled={loading}>
-      {loading ? "Loading..." : "Create Category"}
-    </button>
-  </form>
-  <h3>Total Categories: {categoryLength}</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {categoryData.map((cate) => (
-        <tr key={cate._id}>
-          <td>
-            <img
-              src={`${cate.categoryImage}`}
-              alt="category"
-              width="50"
-              height="50"
-            />
-          </td>
-          <td>{cate.categoryName}</td>
-          <td>{cate.status}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
   );
 };
 

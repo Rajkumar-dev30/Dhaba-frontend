@@ -18,7 +18,7 @@ const DashboardData = () => {
   const getUsers = async () => {
     try {
       const response = await axios.get(
-        "https://kingsdhabaserver.onrender.com/admin/allusers",
+        `${process.env.REACT_APP_API_URL}/admin/allusers`,
         config
       );
       const offData = response.data;

@@ -27,7 +27,7 @@ const ProductList = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        "https://kingsdhabaserver.onrender.com/product/all-products"
+        `${process.env.REACT_APP_API_URL}/product/all-products`
       );
       const offData = response.data;
       const fullData = offData.products;
@@ -84,7 +84,7 @@ const ProductList = () => {
 
     try {
       const response = await axios.post(
-        "https://kingsdhabaserver.onrender.com/product/create-product",
+        `${process.env.REACT_APP_API_URL}/product/create-product`,
         formData,
         config
       );

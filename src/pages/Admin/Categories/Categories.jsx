@@ -2,7 +2,8 @@ import React from "react";
 import "./categories.scss";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import Navbar from "../../../components/navbar/Navbar";
-import CategoriesList from "./components/CreateCategory";
+// import CategoriesList from "./components/CreateCategory";
+import CategoriesList from "../../../test";
 
 const Categories = () => {
   return (
