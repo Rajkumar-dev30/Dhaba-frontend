@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./productdata.scss";
+import { Modal } from "@mui/material";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ProductEdit from "../../../../components/productPopup/ProductEdit";
 const ProductList = () => {
   const [productData, setProductData] = useState([]);
   const [productLength, setProductLength] = useState(0);
@@ -13,6 +15,8 @@ const ProductList = () => {
   const [categoryId, setCategoryId] = useState("");
   const [foodType, setFoodType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [productId, setProductId] = useState(null)
+  const [openModal, setOpenModal] = useState(false)
 
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -32,7 +36,6 @@ const ProductList = () => {
       const offData = response.data;
       const fullData = offData.products;
       setProductData(fullData);
-      //   console.log(fullData)
       if (fullData.length > 0) {
         const length = fullData.length;
         setProductLength(length);
@@ -104,10 +107,23 @@ const ProductList = () => {
     }
   };
 
-  const handleDelete = ()=>{
-    
-  }
+  const handleEdit = (_id) => {
+    setProductId(_id);
+    console.log(productId);
+    setOpenModal(true);
+  };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleDelete = async (_id) => {
+    await axios.delete(
+      `${process.env.REACT_APP_API_URL}/product/delete-product/${_id}`,
+      config
+    );
+    getProducts();
+  };
 
   return (
     <div>
@@ -198,17 +214,29 @@ const ProductList = () => {
           <td>{product.foodType}</td>
           <td>{product.status}</td>
           <td>
-            <BorderColorIcon sx={{width:15,height:15,color:"blue",cursor:"pointer"}}/>
+            <BorderColorIcon sx={{width:15,height:15,color:"blue",cursor:"pointer"}}
+            onClick = {()=> handleEdit(product._id)}
+            />
           </td>
           <td>
             <DeleteIcon sx={{width:20,height:20,color:"red",cursor:"pointer"}}
-              onClick={handleDelete}
+              onClick={()=> handleDelete(product._id)}
             />
           </td>
         </tr>
       ))}
     </tbody>
   </table>
+  <Modal open={openModal} onClose={handleCloseModal}>
+        <div>
+          <ProductEdit
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            getProducts={getProducts}
+            productId={productId}
+          />
+        </div>
+      </Modal>
 </div>
 
   );
