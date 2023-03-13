@@ -139,7 +139,6 @@ const Login = ()=>{
     e.preventDefault();
     await login(Login.userId, Login.password);
     if (localStorage.getItem("user")) {
-      navigate("/admin/dashboard");
       // setLogin({
       //   userId: "",
       //   password: "",

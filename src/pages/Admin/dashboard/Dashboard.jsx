@@ -15,7 +15,7 @@ const Dashboard = () => {
       <div className="top-dash">
       <Navbar type="dashboard"/>
       </div>
-      <div className="bottom-dash">
+      <div className="bottom-dash" style={{display:"flex"}}>
         <DashboardData/>
       </div>
     </div>
