@@ -14,18 +14,13 @@ export const useLogin = () => {
         { userId, password },
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log(`${process.env.REACT_APP_API_URL}`)
 
       localStorage.setItem("user", JSON.stringify(data.data));
       dispatch({ type: "LOGIN", payload: data.data });
     } catch (err) {
-      console.log(`${process.env.REACT_APP_API_URL}`)
-      setError(err.response.data.message)
-
-      ;
+      setError(err.response.data.message);
     }
   };
 
   return { login, error };
 };
-

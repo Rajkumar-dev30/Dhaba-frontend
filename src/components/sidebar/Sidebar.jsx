@@ -27,7 +27,7 @@ const Sidebar = () => {
             }}
             to="/admin/dashboard"
           >
-            Dashboard
+            <h3>Dashboard</h3>
           </NavLink>
 
           <NavLink
@@ -40,7 +40,7 @@ const Sidebar = () => {
             }}
             to="/admin/categories"
           >
-            Categories
+            <h3>Categories</h3>
           </NavLink>
           <NavLink
             style={({ isActive }) => {
@@ -52,7 +52,7 @@ const Sidebar = () => {
             }}
             to="/admin/products"
           >
-            Products
+            <h3>Products</h3>
           </NavLink>
           <NavLink
             style={({ isActive }) => {
@@ -64,11 +64,11 @@ const Sidebar = () => {
             }}
             to="/admin/users"
           >
-            Users
+            <h3>Users</h3>
           </NavLink>
         </div>
         <div className="last">
-          <button onClick={logout}>Logout</button>
+          <button style={{cursor:"pointer"}} onClick={logout}>Logout</button>
         </div>
       </div>
     </>

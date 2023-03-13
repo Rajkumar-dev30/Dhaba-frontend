@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from "axios"
+import "./productedit.scss"
 
 const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
 
@@ -32,8 +33,8 @@ const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
         `${process.env.REACT_APP_API_URL}/product/single-product/${_id}`,
         config
       )
-      const productData = response.data.products;
-      setProductData(productData)
+      const productData = response.data;
+      setProductData(productData.product)
     }catch(err){
       console.log(err)
     }
@@ -110,63 +111,80 @@ const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
     }
   };
 
+  const handleClose =() =>{
+    handleCloseModal();
+
+  }
+
   return (
-    <div>
-       <form onSubmit={handleSubmit}>
-    <div>
-      <label htmlFor="product-name">Product Name:</label>
-      <input
+    <>
+    <div className='product-model'>
+      <div className='edit-form'>
+      <h1>Edit Product</h1>
+    <div className='edit-style'>
+    <div className='left-edit'>
+    <label htmlFor="product-name">Product Name:</label>
+    <label htmlFor="product-image">Product Image:</label>
+    <label htmlFor="product-description">Description:</label>
+    <label htmlFor="product-price">Price:</label>
+    <label htmlFor="product-categoryId">categoryId:</label>
+    <label htmlFor="product-food-type">Food Type:</label>
+    </div>
+    <div className='right-edit'>
+    <input
         type="text"
         id="product-name"
         value={productName}
+        placeholder={productData.productName}
         onChange={handleProductNameChange}
       />
-    </div>
-    <div>
-      <label htmlFor="product-image">Product Image:</label>
       <input type="file" id="product-image" onChange={handleAvatarChange} />
-    </div>
-    <div>
-      <label htmlFor="product-description">Description:</label>
       <input
         type="text"
         id="product-description"
         value={description}
+        placeholder={productData.description}
         onChange={handleDescriptionChange}
       />
-    </div>
-    <div>
-      <label htmlFor="product-price">Price:</label>
       <input
         type="number"
         id="product-price"
         value={price}
+        placeholder={productData.price}
         onChange={handlePriceChange}
       />
-    </div>
-    <div>
-      <label htmlFor="product-categoryId">categoryId:</label>
       <input
         type="text"
         id="product-categoryId"
-        value={categoryId}
+        value={productData.categoryId}
         onChange={handlecategoryIdChange}
       />
-    </div>
-    <div>
-      <label htmlFor="product-food-type">Food Type:</label>
-      <input
+       <input
         type="text"
         id="product-food-type"
         value={foodType}
+        placeholder={productData.foodType}
         onChange={handleFoodTypeChange}
       />
     </div>
-    <button type="submit" disabled={loading}>
-      {loading ? "Loading..." : "Update Product"}
-    </button>
-  </form>
     </div>
+    <div className='edit-buttons'>
+    <button className='update-button' type="submit" disabled={loading} onClick={handleSubmit}>
+      {loading ? "Loading..." : "Update"}
+    </button>
+    <button className='close-button' onClick={handleClose}>Close</button>
+    </div>
+    </div>
+    {/* <div className='edit-buttons'>
+    <button className='update-button' type="submit" disabled={loading} onClick={handleSubmit}>
+      {loading ? "Loading..." : "Update"}
+    </button>
+    <button className='close-button' onClick={handleClose}>Close</button>
+    </div> */}
+    </div>
+
+    
+    </>
   )
 }
 

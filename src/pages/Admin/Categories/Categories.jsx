@@ -1,15 +1,17 @@
 import React from "react";
 import "./categories.scss";
 import Sidebar from "../../../components/sidebar/Sidebar";
+// import SideNew from "../../../components/NewSidebar/SideNew";
 import Navbar from "../../../components/navbar/Navbar";
-// import CategoriesList from "./components/CreateCategory";
-import CategoriesList from "../../../test";
+import CategoriesList from "./components/CreateCategory";
+// import CategoriesList from "../../../test";
 
 const Categories = () => {
   return (
     <div className="categories-alignments">
       <div className="left">
-        <Sidebar />
+     <Sidebar /> 
+     {/*   <SideNew/>  */}
       </div>
       <div className="right">
         <div className="top-cat">

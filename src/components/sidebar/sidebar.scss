@@ -6,7 +6,7 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    background-color: lightgrey;
+    background-color: rgba($color: #d3d3d3, $alpha: 0.4);
     padding: 5%;
     .top{
         display: flex;
@@ -24,7 +24,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        gap: 15px;
+        gap: 5vh;
     }
     .last{
         display: flex;

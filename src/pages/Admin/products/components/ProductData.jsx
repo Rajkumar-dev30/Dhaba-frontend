@@ -2,21 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./productdata.scss";
 import { Modal } from "@mui/material";
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ProductEdit from "../../../../components/productPopup/ProductEdit";
+import ProductAdd from "../../../../components/productPopup/ProductAdd";
 const ProductList = () => {
   const [productData, setProductData] = useState([]);
   const [productLength, setProductLength] = useState(0);
-  const [productName, setProductName] = useState("");
-  const [avatar, setAvatar] = useState(null);
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [foodType, setFoodType] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [productId, setProductId] = useState(null)
-  const [openModal, setOpenModal] = useState(false)
+  const [productId, setProductId] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
 
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -49,64 +42,6 @@ const ProductList = () => {
     getProducts();
   }, []);
 
-  const handleProductNameChange = (event) => {
-    setProductName(event.target.value);
-  };
-
-  const handleAvatarChange = (event) => {
-    setAvatar(event.target.files[0]);
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
-  };
-
-  const handlecategoryIdChange = (event) => {
-    setCategoryId(event.target.value);
-  };
-
-  const handleFoodTypeChange = (event) => {
-    setFoodType(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData();
-    formData.append("productName", productName);
-    formData.append("avatar", avatar);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("categoryId", categoryId);
-    formData.append("foodType", foodType);
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/product/create-product`,
-        formData,
-        config
-      );
-      console.log(response.data);
-      setProductName("");
-      setAvatar(null);
-      setDescription("");
-      setPrice("");
-      setCategoryId("");
-      setFoodType("");
-      document.getElementById("product-image").value = "";
-      getProducts();
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleEdit = (_id) => {
     setProductId(_id);
     console.log(productId);
@@ -125,109 +60,114 @@ const ProductList = () => {
     getProducts();
   };
 
+  const handleModel2 = () => {
+    setOpenModal2(true)
+  }
+
+  const handleCloseModal2 = () => {
+    setOpenModal2(false);
+  
+  }
+
+  const toggleStatus = async (_id) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/product/single-product/toggleStatus/${_id}`,
+        null,
+        config
+      );
+      const updatedProduct = response.data.response[0];
+      setProductData((prevState) => {
+        const updatedData = prevState.map((product) => {
+          if (product.id === updatedProduct.id) {
+            return updatedProduct;
+          }
+          return product;
+        });
+        return updatedData;
+      });
+      getProducts();
+
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data.message);
+      } else {
+        throw new Error("Unable to toggle status. Please try again later.");
+      }
+    }
+  };
+
+   useEffect(() => {
+    getProducts();
+  }, []);
+
   return (
     <div>
-  <form onSubmit={handleSubmit}>
-    <div>
-      <label htmlFor="product-name">Product Name:</label>
-      <input
-        type="text"
-        id="product-name"
-        value={productName}
-        onChange={handleProductNameChange}
-      />
-    </div>
-    <div>
-      <label htmlFor="product-image">Product Image:</label>
-      <input type="file" id="product-image" onChange={handleAvatarChange} />
-    </div>
-    <div>
-      <label htmlFor="product-description">Description:</label>
-      <input
-        type="text"
-        id="product-description"
-        value={description}
-        onChange={handleDescriptionChange}
-      />
-    </div>
-    <div>
-      <label htmlFor="product-price">Price:</label>
-      <input
-        type="number"
-        id="product-price"
-        value={price}
-        onChange={handlePriceChange}
-      />
-    </div>
-    <div>
-      <label htmlFor="product-categoryId">categoryId:</label>
-      <input
-        type="text"
-        id="product-categoryId"
-        value={categoryId}
-        onChange={handlecategoryIdChange}
-      />
-    </div>
-    <div>
-      <label htmlFor="product-food-type">Food Type:</label>
-      <input
-        type="text"
-        id="product-food-type"
-        value={foodType}
-        onChange={handleFoodTypeChange}
-      />
-    </div>
-    <button type="submit" disabled={loading}>
-      {loading ? "Loading..." : "Create Product"}
-    </button>
-  </form>
-  <h3>Total Products: {productLength}</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>CategoryID</th>
-        <th>Food Type</th>
-        <th>Status</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {productData.map((product) => (
-        <tr key={product._id}>
-          <td>
-            <img
-              src={`${product.productImage}`}
-              alt="product"
-              width="50"
-              height="50"
-            />
-          </td>
-          <td>{product.productName}</td>
-          <td>{product.description}</td>
-          <td>{product.price}</td>
-          <td>{product.categoryId}</td>
-          <td>{product.foodType}</td>
-          <td>{product.status}</td>
-          <td>
-            <BorderColorIcon sx={{width:15,height:15,color:"blue",cursor:"pointer"}}
+  <button className="Add-button" onClick={handleModel2}>Add
+  </button>
+      <h3 style={{padding:"15px 0 0 15px"}}>Total Products: {productLength}</h3>
+      <table className="product-table">
+        <thead>
+          <tr className="product-tableRow">
+            <th className="product-tableHead">Image</th>
+            <th className="product-tableHead">Name</th>
+            <th className="product-tableHead">Description</th>
+            <th className="product-tableHead">Price</th>
+            <th className="product-tableHead">CategoryID</th>
+            <th className="product-tableHead">Food Type</th>
+            <th className="product-tableHead">Status</th>
+            <th className="product-tableHead">Edit</th>
+            <th className="product-tableHead">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {productData.map((product) => (
+            <tr key={product._id} className="product-tableRow">
+              <td className="product-tableData">
+                <img
+                  src={`${product.productImage}`}
+                  alt="product"
+                  width="50"
+                  height="50"
+                />
+              </td>
+              <td className="product-tableData">{product.productName}</td>
+              <td className="product-tableData">{product.description}</td>
+              <td className="product-tableData">{product.price}</td>
+              <td className="product-tableData">{product.categoryId}</td>
+              <td className="product-tableData">{product.foodType}</td>
+              <td className="product-tableData">
+              <button onClick={() => toggleStatus(product._id)} className={product.status === "active" ? "Pactive-button" : "Pinactive-button"}>
+              {product.status === "active" ? "Active" : "InActive"}
+              </button>
+              </td>
+              <td className="product-tableData">
+                {/* <BorderColorIcon sx={{width:15,height:15,color:"blue",cursor:"pointer"}}
             onClick = {()=> handleEdit(product._id)}
-            />
-          </td>
-          <td>
-            <DeleteIcon sx={{width:20,height:20,color:"red",cursor:"pointer"}}
+      /> */}
+                <button
+                  className="edit-btn"
+                  onClick={() => handleEdit(product._id)}
+                >
+                  Edit
+                </button>
+              </td>
+              <td className="product-tableData">
+                {/* <DeleteIcon sx={{width:20,height:20,color:"red",cursor:"pointer"}}
               onClick={()=> handleDelete(product._id)}
-            />
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  <Modal open={openModal} onClose={handleCloseModal}>
+    /> */}
+                <button
+                  className="del-btn"
+                  onClick={() => handleDelete(product._id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Modal open={openModal} onClose={handleCloseModal}>
         <div>
           <ProductEdit
             openModal={openModal}
@@ -237,8 +177,16 @@ const ProductList = () => {
           />
         </div>
       </Modal>
-</div>
-
+      <Modal open={openModal2} onClose={handleCloseModal2}>
+        <div>
+          <ProductAdd
+            openModal2={openModal2}
+            handleCloseModal2={handleCloseModal2}
+            getProducts={getProducts}
+          />
+        </div>
+      </Modal>
+    </div>
   );
 };
 

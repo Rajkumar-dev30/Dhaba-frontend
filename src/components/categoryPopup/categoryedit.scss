@@ -1,26 +1,80 @@
-.edit-form {
-    background-color: rgba(#16378d, 0.23);
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    .edit-popup{
+.category-model {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .cat-edit-form {
+    height: 50%;
+    width: 30%;
+    background-color: rgb(213, 215, 218);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 6vh;
+    .edit-style{
         display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
+        gap: 3vw;
+        justify-content: center;
         align-items: center;
-        // gap: 2vh;
-        padding: 4%;
-        width: 46rem;
-        height: 36rem;
-        background: #ffffff;
-        box-shadow: 0px 6px 20px #0000000f;
-        border-radius: 10px;
-        // opacity: 1;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        .left-edit{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 2vh;
+        }
+        .right-edit{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 2vh;
+            input{
+                border: "0.5px solid black";
+            outline: none;
+            width: 200px;
+            }
+        }
+        
+   }
+
+    .edit-buttons {
+      .update-button {
+        background-color: blue;
+        height: 40px;
+        width: 100px;
+        color: white;
+        margin-right: 10px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        padding: 5px;
+        cursor: pointer;
+      }
+      .close-button {
+        background-color: red;
+        height: 40px;
+        width: 100px;
+        color: white;
+        margin-left: 10px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        padding: 5px;
+        cursor: pointer;
+      }
     }
+  }
+}
+
+.cat-error-msg{
+  position: absolute;
+  top: 56%;
+  left: 37%;
+  color: red;
 }
