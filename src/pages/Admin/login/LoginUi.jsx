@@ -14,7 +14,7 @@ import { useLogin } from "../../../Hooks/useLogin";
 
 const LoginUi = ()=> {
   const { login, error } = useLogin();
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [logError, setLogError] = useState(null);
 
   const [loginDetails, setLoginDetails] = useState({
@@ -33,14 +33,15 @@ const LoginUi = ()=> {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!loginDetails.password) {
-      setLogError("Please enter a password");
-      return;
-    }
     
-    await login(loginDetails.userId, loginDetails.password); 
-    if (localStorage.getItem("user")) {
-      navigate("/admin/dashboard");
+    
+    await login(loginDetails.userId, loginDetails.password);
+    let user = localStorage.getItem("user")
+    if(user){
+      navigate("/admin/dashboard")
+    }
+     else{
+      setLogError(error)
     }
   };
 

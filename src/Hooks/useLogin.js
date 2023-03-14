@@ -1,26 +1,36 @@
 import { useState } from "react";
-import { useAuthContext } from "./useAuthContex";
-import axios from "axios";
+import {useAuthContext} from "./useAuthContex";
 
-export const useLogin = () => {
-  const { dispatch } = useAuthContext();
-  const [error, setError] = useState(null);
+export const useLogin = () =>{
+    const [error, setError] = useState(null);
+    const { dispatch } = useAuthContext();
 
-  const login = async (userId, password) => {
-    setError(null);
-    try {
-      const data = await axios.post(
-        `${process.env.REACT_APP_API_URL}/admin/login`,
-        { userId, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
+    const login = async (userId, password) =>{
+        setError(null);
 
-      localStorage.setItem("user", JSON.stringify(data.data));
-      dispatch({ type: "LOGIN", payload: data.data });
-    } catch (err) {
-      setError(err.response.data.message);
-    }
-  };
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/login`,{
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({userId,password}),
+        });
 
-  return { login, error };
-};
+        const data = await response.json();
+
+        if (!response.ok) {
+            setError(data.error);
+        }
+        if (data.success === true) {
+            //save user data in local storage
+            localStorage.setItem("user", JSON.stringify(data));
+
+            //update user context
+            dispatch({type: "LOGIN", payload: data});
+        }
+        else{
+          setError(data.message)
+        }
+       
+    };
+
+    return {login, error};
+}
