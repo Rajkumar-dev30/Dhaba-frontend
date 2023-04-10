@@ -1,15 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import  AuthContext  from './Contex/AuthContex';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import AuthContext from "./Contex/AuthContex";
+import SidebarContext from "./Contex/SidebarContext";
+import AboutusContext from "./Contex/AboutusContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <AuthContext>
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <SidebarContext>
+      <AboutusContext>
+        <App />
+      </AboutusContext>
+    </SidebarContext>
   </AuthContext>
 );
-

@@ -6,15 +6,13 @@ import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import "./LoginUi.css";
-import profile from "../../../assets/kingDhaba-sample.png";
-import axios from "axios";
 
 // IMPORTING DIFFERENT COMPONENTS
 import { useLogin } from "../../../Hooks/useLogin";
 
-const LoginUi = ()=> {
+const LoginUi = () => {
   const { login, error } = useLogin();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [logError, setLogError] = useState(null);
 
   const [loginDetails, setLoginDetails] = useState({
@@ -29,30 +27,29 @@ const LoginUi = ()=> {
     setLoginDetails({ ...loginDetails, [name]: value });
   };
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    
+
     await login(loginDetails.userId, loginDetails.password);
-    let user = localStorage.getItem("user")
-    if(user){
-      navigate("/admin/dashboard")
-    }
-     else{
-      setLogError(error)
+    let user = localStorage.getItem("user");
+    if (user) {
+      navigate("/admin/dashboard");
+    } else {
+      setLogError(error);
     }
   };
 
-  
   return (
     <div className="main">
       <div className="sub-main">
         <div>
           <div className="imgs">
             <div className="container-image">
-              <img src={profile} alt="profile" className="profile" />
+              <img
+                src={require("../../../assets/king dhaba admin logo.png")}
+                alt="profile"
+                className="profile"
+              />
             </div>
           </div>
           <div>
@@ -71,7 +68,7 @@ const LoginUi = ()=> {
             </div>
             <div className="second-input">
               <Input
-              className="name"
+                className="name"
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={loginDetails.password}
@@ -93,21 +90,20 @@ const LoginUi = ()=> {
                     </IconButton>
                   </InputAdornment>
                 }
-                // className="passInp"
               />
             </div>
-             {logError && (
-              <div style={{color:"red"}}>{logError}</div>
-            )} 
-            
+            {logError && <div style={{ color: "red" }}>{logError}</div>}
+
             <div className="login-button">
-              <button className="log-button" onClick={handleSubmit}>Login</button>
+              <button className="log-button" onClick={handleSubmit}>
+                Login
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default LoginUi;

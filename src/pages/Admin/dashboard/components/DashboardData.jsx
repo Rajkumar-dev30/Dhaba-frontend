@@ -1,9 +1,11 @@
 import axios from "axios";
 import { React, useState, useEffect } from "react";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
-import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
-
+import { FaRegUser } from "react-icons/fa";
+import { BiCategoryAlt } from "react-icons/bi";
+import { BsArrowRightCircleFill } from "react-icons/bs";
+import { IoAppsOutline, IoFastFoodOutline } from "react-icons/io5";
+import "../dashboard.scss";
+import { NavLink } from "react-router-dom";
 const DashboardData = () => {
   const [userData, setUserData] = useState("");
   const [categoryData, setCategoryData] = useState("");
@@ -11,7 +13,6 @@ const DashboardData = () => {
   const [userLength, setUserLength] = useState("");
   const [categoryLength, setCategoryLength] = useState("");
   const [productLength, setProductLength] = useState("");
-
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
 
@@ -31,8 +32,7 @@ const DashboardData = () => {
       const fullData = offData.response;
       setUserData(fullData);
       if (fullData.length > 0) {
-        const nestedArray = fullData[0];
-        const length = nestedArray.length;
+        const length = fullData.length;
         setUserLength(length);
       }
     } catch (err) {
@@ -81,75 +81,66 @@ const DashboardData = () => {
     {
       head: "Total Users",
       length: userLength,
-      logo: <PermIdentityIcon />,
-      color: "red",
+      logo: <FaRegUser size={70} opacity=".3" />,
+      color: "#17A2B8",
+      path: "/admin/users",
     },
     {
       head: "Total Categories",
       length: categoryLength,
-      logo: <CategoryOutlinedIcon />,
-      color: "green",
+      logo: <BiCategoryAlt size={70} opacity=".2" />,
+      color: "#28A745	",
+      path: "/admin/categories",
     },
     {
       head: "Total Products",
       length: productLength,
-      logo: <AppsOutlinedIcon />,
-      color: "yellow",
+      logo: <IoAppsOutline size={70} opacity=".3" />,
+      color: "#F1AE16",
+      path: "/admin/products",
+    },
+    {
+      head: "Total Orders",
+      length: productLength,
+      logo: <IoFastFoodOutline size={70} opacity=".3" />,
+      color: "#DC3545",
     },
   ];
-
-  const boxStyle = () => {
-    return {
-      display: "flex",
-    };
-  };
-
+  const [shake, setshake] = useState(true);
   return (
-    <div>
-      {/*
-        {userData &&
-        userData.map((usersArray, index) => (
-          <div key={index}>
-            {usersArray.map((user) => (
-              <div key={user._id}>
-              <div>
-                <p>Name: {user.fullname}</p>
-                <p>Mobile: {user.mobile}</p>
-                <p>Status: {user.status}</p>
-              </div>
-              </div>
-            ))}
-          </div>
-        ))}
-            */}
-
+    <div className="Dashboard">
       {data.map((item) => {
-        const { head, length, logo, color } = item;
+        const { head, length, logo, color, path } = item;
         return (
-          <div
-            className="boxes"
-            style={{
-              // display: "flex",
-              // justifyContent:"flex-start",
-              // alignItems:"center",
-              // flexDirection: "column",
-              backgroundColor: color,
-              width: "200px",
-              height: "80px",
-              borderRadius: "10px",
-            }}
-          >
-            <div className="box-top">
-              <h2>{head}</h2>
-            </div>
-            <div className="box-bottom" style={{
-              
-              display: "flex",
-              justifyContent:"space-evenly",
-              alignItems:"center",
-            }}>
-              <div className="box-bottom-left">{length}</div>
-              <div className="box-bottom-right">{logo}</div>
+          <div>
+            <div
+              className="boxes"
+              style={{
+                backgroundColor: color,
+                width: "250px",
+                height: "152px",
+                borderRadius: "5px",
+              }}
+            >
+              <div className="Boxes">
+                <div className="box-top">
+                  <div className="box-bottom-left">{length}</div>
+                  <p className="head">{head}</p>
+                </div>
+                <div className="box-logo">
+                  <span>{logo}</span>
+                </div>
+              </div>
+              <div className="more-info">
+                <div className="MOREINFO">
+                  <NavLink to={path} className="moreinfo">
+                    More Info
+                    <span style={{ color: "white" }}>
+                      <BsArrowRightCircleFill />
+                    </span>
+                  </NavLink>
+                </div>
+              </div>
             </div>
           </div>
         );

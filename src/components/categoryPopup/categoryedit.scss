@@ -11,37 +11,38 @@
   align-items: center;
   .cat-edit-form {
     height: 50%;
-    width: 30%;
+    width: 35%;
     background-color: rgb(213, 215, 218);
+    border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 6vh;
-    .edit-style{
+    gap: 7vh;
+    .edit-style {
+      display: flex;
+      gap: 3vw;
+      justify-content: center;
+      align-items: center;
+      .left-edit {
         display: flex;
-        gap: 3vw;
-        justify-content: center;
-        align-items: center;
-        .left-edit{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            gap: 2vh;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 4.5vh;
+        font-weight: 600;
+      }
+      .right-edit {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 4vh;
+        input {
+          border: "0.5px solid black";
+          outline: none;
+          width: 200px;
         }
-        .right-edit{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            gap: 2vh;
-            input{
-                border: "0.5px solid black";
-            outline: none;
-            width: 200px;
-            }
-        }
-        
-   }
+      }
+    }
 
     .edit-buttons {
       .update-button {
@@ -55,6 +56,8 @@
         border-radius: 5px;
         padding: 5px;
         cursor: pointer;
+        font-size: 15px;
+        font-weight: 550;
       }
       .close-button {
         background-color: red;
@@ -66,15 +69,18 @@
         outline: none;
         border-radius: 5px;
         padding: 5px;
+        font-size: 15px;
+        font-weight: 550;
         cursor: pointer;
       }
     }
   }
 }
 
-.cat-error-msg{
+.cat-error-msg {
   position: absolute;
-  top: 56%;
+  top: 57%;
   left: 37%;
   color: red;
+  font-size: 12px;
 }

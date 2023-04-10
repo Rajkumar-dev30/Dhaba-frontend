@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./categoryedit.scss"
-const CategoryAdd = ({handleCloseModal2, getCategories}) => {
+import "./categoryedit.scss";
+const CategoryAdd = ({ handleCloseModal2, getCategories }) => {
   const [categoryName, setCategoryName] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,50 +49,55 @@ const CategoryAdd = ({handleCloseModal2, getCategories}) => {
       handleCloseModal2();
     }
   };
-  
-  
-  const handleClose =() =>{
+
+  const handleClose = () => {
     handleCloseModal2();
-  }
+  };
 
   useEffect(() => {
     getCategories();
   }, []);
   return (
     <div>
-  <div className='category-model'>
-  <div className='cat-edit-form'>
-  <h1>Create Category</h1>
-  <div className='edit-style'>
-  
-    <div className='left-edit'>
-    <label htmlFor="category-name">Category Name:</label>
-    <label htmlFor="category-image">Category Image:</label>
-    </div>
-    <div className='right-edit'>
-    <input
-            type="text"
-            id="category-name"
-            value={categoryName}
-            onChange={handleCategoryNameChange}/>
+      <div className="category-model">
+        <div className="cat-edit-form">
+          <h1>Create Category</h1>
+          <div className="edit-style">
+            <div className="left-edit">
+              <label htmlFor="category-name">Category Name:</label>
+              <label htmlFor="category-image">Category Image:</label>
+            </div>
+            <div className="right-edit">
+              <input
+                type="text"
+                id="category-name"
+                value={categoryName}
+                onChange={handleCategoryNameChange}
+              />
 
-            <input
-            type="file"
-            id="category-image"
-            onChange={handleAvatarChange}
-          />
-    </div>
-    </div>
-    <h5 className="cat-error-msg">* Enter all fields</h5>
-    <div className='edit-buttons'>
-    <button className='update-button' type="submit" disabled={loading} onClick={handleSubmit}>
-      {loading ? "Loading..." : "Add"}
-    </button>
-    <button className='close-button' onClick={handleClose}>Close</button>
-    </div>
-    
-    </div>
-    </div>
+              <input
+                type="file"
+                id="category-image"
+                onChange={handleAvatarChange}
+              />
+            </div>
+          </div>
+          <h5 className="cat-error-msg">* Enter all fields</h5>
+          <div className="edit-buttons">
+            <button
+              className="update-button"
+              type="submit"
+              disabled={loading}
+              onClick={handleSubmit}
+            >
+              {loading ? "Loading..." : "Add"}
+            </button>
+            <button className="close-button" onClick={handleClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

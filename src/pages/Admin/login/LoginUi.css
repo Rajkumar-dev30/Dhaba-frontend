@@ -1,123 +1,106 @@
 .main {
-    text-align: center;
-    justify-content: center;
-    display: flex; 
-    padding-top: 90px;
-    padding-bottom: 90px;
-    background-color: #e1e3eb;
-  }
-  .sub-main {
-    display: flex;
-    justify-content: center;
-    height: 550px;
-    width: 35%;
-    box-shadow: 11px 12px 13px 12px rgb(207, 207, 207);
-    padding-top: 30px;
-    border-radius: 60px; 
-    background-color: white;
-  }
-  .imgs {
-      padding-top: 20px;
-      justify-content: center;
-      display: flex;
-    }
-  .container-image {
-    background-color: rgb(223, 221, 221); 
-    border-radius: 150px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    height: 115px;
-    width: 115px;
-  }
-  .profile {
-    height: 100px;
-    width: 100px;
-    border-radius: 130px;
-  } 
-/* 
-  input{
-      width: 300px;
-      height: 50px;
-      border-radius: 60px;
-      border: none;
-      outline: none;
-      background-color: #fff;
-  } */
-
-  .email{
-      height: 25px;
-      width: 25px;
-      position: absolute;
-      padding: 14px 0 0 25px;
-  }
-
-  .name{
-      text-align: center;
-      font-size: 20px;
-      box-shadow: inset 0px 0px 25px 0px #888;
-      width: 300px;
-      height: 50px;
-      border-radius: 60px;
-      border: none;
-      outline: none;
-      background-color: #fff;
-
-  }
-  .eye{
-    width: 50px;
-    padding-right: 40px !important;
-  }
-  .css-q0jhri-MuiInputBase-root-MuiInput-root:before {
-    border: none !important;
-  }
-  .css-q0jhri-MuiInputBase-root-MuiInput-root:after {
-    border: none !important;
-  }
-  .css-1x51dt5-MuiInputBase-input-MuiInput-input{
-    font-size: 20px !important;
-    text-align: center;
-    padding-left: 50px !important;
-    
-  }
-  .passInp{
-    text-align: center;
-    /* padding-left: 100px; */
-    width: 300px;
-    height: 50px;
-    border-radius: 60px;
-    box-shadow: inset 0px 0px 25px 0px #888;
-    border: none;
-    outline: none;
-    background-color: #fff;
-  }
-  .second-input{
-      padding-top: 20px;
-  }
-.error-msg{
-    color: red;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: #e1e3eb;
 }
-  
-  .login-button{
-      padding-top: 25px;
-  }
-  .login-button .log-button{
-    width: 300px;
-    height: 50px;
-    border-radius: 60px;
-    background-color: blue;
-    color: white;
-    font-size: 25px;
-    border: none;
-    cursor: pointer;
-    
+.sub-main {
+  display: flex;
+  justify-content: center;
+  height: 500px;
+  width: 34%;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  padding-top: 30px;
+  border-radius: 40px;
+  background-color: white;
 }
-
-  .link{
-      font-size: 25px;
-      font-weight: 400;
-  }
-   a{
-       /* color: blue; */
-       text-decoration: none;
-   }
+.imgs {
+  padding-top: 20px;
+  justify-content: center;
+  display: flex;
+}
+.container-image {
+  background-color: rgb(223, 221, 221);
+  border-radius: 150px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 115px;
+  width: 115px;
+}
+.profile {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.email {
+  height: 25px;
+  width: 25px;
+  position: absolute;
+  padding: 14px 0 0 25px;
+}
+.name {
+  text-align: center;
+  font-size: 20px;
+  box-shadow: inset 0px 0px 20px 0px #888;
+  width: 300px;
+  height: 50px;
+  border-radius: 60px;
+  border: none;
+  outline: none;
+  background-color: #fff;
+}
+.eye {
+  width: 50px;
+  padding-right: 40px !important;
+}
+.css-q0jhri-MuiInputBase-root-MuiInput-root:before {
+  border: none !important;
+}
+.css-q0jhri-MuiInputBase-root-MuiInput-root:after {
+  border: none !important;
+}
+.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+  font-size: 20px !important;
+  text-align: center;
+  padding-left: 50px !important;
+}
+.passInp {
+  text-align: center;
+  width: 300px;
+  height: 50px;
+  border-radius: 60px;
+  box-shadow: inset 0px 0px 25px 0px #888;
+  border: none;
+  outline: none;
+  background-color: #fff;
+}
+.second-input {
+  padding-top: 20px;
+}
+.error-msg {
+  color: red;
+}
+.login-button {
+  padding-top: 25px;
+}
+.login-button .log-button {
+  width: 300px;
+  height: 50px;
+  border-radius: 60px;
+  background-color: blue;
+  color: white;
+  font-size: 25px;
+  border: none;
+  cursor: pointer;
+}
+.link {
+  font-size: 25px;
+  font-weight: 400;
+}
+a {
+  text-decoration: none;
+}

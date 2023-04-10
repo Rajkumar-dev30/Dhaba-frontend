@@ -10,15 +10,14 @@ const Categories = () => {
   return (
     <div className="categories-alignments">
       <div className="left">
-     <Sidebar /> 
-     {/*   <SideNew/>  */}
+        <Sidebar />
       </div>
       <div className="right">
         <div className="top-cat">
           <Navbar type="categories" />
         </div>
         <div className="bottom-cat">
-          <CategoriesList/>
+          <CategoriesList />
         </div>
       </div>
     </div>

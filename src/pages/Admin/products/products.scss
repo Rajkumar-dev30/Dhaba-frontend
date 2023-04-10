@@ -1,8 +1,8 @@
-
-.product-alignments{
+.product-alignments {
+  display: flex;
+  width: 100%;
+  .right {
     display: flex;
-    .right{
-        display: flex;
-        flex-direction: column;  
-    }
+    flex-direction: column;
+  }
 }

@@ -1,9 +1,13 @@
-import React, {useState, useEffect} from 'react'
-import axios from "axios"
-import "./productedit.scss"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./productedit.scss";
 
-const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
-
+const ProductEdit = ({
+  openModal,
+  handleCloseModal,
+  getProducts,
+  productId,
+}) => {
   const [productData, setProductData] = useState([]);
   // const [productLength, setProductLength] = useState(0);
   const [productName, setProductName] = useState("");
@@ -13,8 +17,7 @@ const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
   const [categoryId, setCategoryId] = useState("");
   const [foodType, setFoodType] = useState("");
   const [loading, setLoading] = useState(false);
-  const [productEditId, setProductEditId] = useState(null)
-  // const [openModal, setOpenModal] = useState(false)
+  const [productEditId, setProductEditId] = useState(null);
 
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -27,24 +30,24 @@ const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
   };
 
   const getProduct = async (_id) => {
-    setProductEditId(_id)
-    try{
+    setProductEditId(_id);
+    try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/product/single-product/${_id}`,
         config
-      )
+      );
       const productData = response.data;
-      setProductData(productData.product)
-    }catch(err){
-      console.log(err)
+      setProductData(productData.product);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(productId) {
-      getProduct(productId)
+  useEffect(() => {
+    if (productId) {
+      getProduct(productId);
     }
-  },[productId])
+  }, [productId]);
 
   const handleProductNameChange = (event) => {
     setProductName(event.target.value);
@@ -76,25 +79,24 @@ const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
 
     const formDataToUpdate = {};
 
-    if(productName !== ""){
+    if (productName !== "") {
       formDataToUpdate.productName = productName;
     }
-    if(avatar !== null){
+    if (avatar !== null) {
       formDataToUpdate.avatar = avatar;
     }
-    if(description !== ""){
+    if (description !== "") {
       formDataToUpdate.description = description;
     }
-    if(price !== ""){
+    if (price !== "") {
       formDataToUpdate.price = price;
     }
-    if(foodType !== ""){
+    if (foodType !== "") {
       formDataToUpdate.foodType = foodType;
     }
-    if(categoryId !== ""){
+    if (categoryId !== "") {
       formDataToUpdate.categoryId = categoryId;
     }
-    
 
     try {
       await axios.patch(
@@ -111,81 +113,83 @@ const ProductEdit = ({openModal, handleCloseModal, getProducts, productId}) => {
     }
   };
 
-  const handleClose =() =>{
+  const handleClose = () => {
     handleCloseModal();
-
-  }
+  };
 
   return (
     <>
-    <div className='product-model'>
-      <div className='edit-form'>
-      <h1>Edit Product</h1>
-    <div className='edit-style'>
-    <div className='left-edit'>
-    <label htmlFor="product-name">Product Name:</label>
-    <label htmlFor="product-image">Product Image:</label>
-    <label htmlFor="product-description">Description:</label>
-    <label htmlFor="product-price">Price:</label>
-    <label htmlFor="product-categoryId">categoryId:</label>
-    <label htmlFor="product-food-type">Food Type:</label>
-    </div>
-    <div className='right-edit'>
-    <input
-        type="text"
-        id="product-name"
-        value={productName}
-        placeholder={productData.productName}
-        onChange={handleProductNameChange}
-      />
-      <input type="file" id="product-image" onChange={handleAvatarChange} />
-      <input
-        type="text"
-        id="product-description"
-        value={description}
-        placeholder={productData.description}
-        onChange={handleDescriptionChange}
-      />
-      <input
-        type="number"
-        id="product-price"
-        value={price}
-        placeholder={productData.price}
-        onChange={handlePriceChange}
-      />
-      <input
-        type="text"
-        id="product-categoryId"
-        value={productData.categoryId}
-        onChange={handlecategoryIdChange}
-      />
-       <input
-        type="text"
-        id="product-food-type"
-        value={foodType}
-        placeholder={productData.foodType}
-        onChange={handleFoodTypeChange}
-      />
-    </div>
-    </div>
-    <div className='edit-buttons'>
-    <button className='update-button' type="submit" disabled={loading} onClick={handleSubmit}>
-      {loading ? "Loading..." : "Update"}
-    </button>
-    <button className='close-button' onClick={handleClose}>Close</button>
-    </div>
-    </div>
-    {/* <div className='edit-buttons'>
-    <button className='update-button' type="submit" disabled={loading} onClick={handleSubmit}>
-      {loading ? "Loading..." : "Update"}
-    </button>
-    <button className='close-button' onClick={handleClose}>Close</button>
-    </div> */}
-    </div>
-
-    
+      <div className="product-model">
+        <div className="edit-form">
+          <h1>Edit Product</h1>
+          <div className="edit-style">
+            <div className="left-edit">
+              <label htmlFor="product-name">Product Name:</label>
+              <label htmlFor="product-image">Product Image:</label>
+              <label htmlFor="product-description">Description:</label>
+              <label htmlFor="product-price">Price:</label>
+              <label htmlFor="product-categoryId">categoryId:</label>
+              <label htmlFor="product-food-type">Food Type:</label>
+            </div>
+            <div className="right-edit">
+              <input
+                type="text"
+                id="product-name"
+                value={productName}
+                placeholder={productData.productName}
+                onChange={handleProductNameChange}
+              />
+              <input
+                type="file"
+                id="product-image"
+                onChange={handleAvatarChange}
+              />
+              <input
+                type="text"
+                id="product-description"
+                value={description}
+                placeholder={productData.description}
+                onChange={handleDescriptionChange}
+              />
+              <input
+                type="number"
+                id="product-price"
+                value={price}
+                placeholder={productData.price}
+                onChange={handlePriceChange}
+              />
+              <input
+                type="text"
+                id="product-categoryId"
+                value={productData.categoryId}
+                onChange={handlecategoryIdChange}
+              />
+              <input
+                type="text"
+                id="product-food-type"
+                value={foodType}
+                placeholder={productData.foodType}
+                onChange={handleFoodTypeChange}
+              />
+            </div>
+          </div>
+          <div className="edit-buttons">
+            <button
+              className="update-button"
+              type="submit"
+              disabled={loading}
+              onClick={handleSubmit}
+            >
+              {loading ? "Loading..." : "Update"}
+            </button>
+            <button className="close-button" onClick={handleClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default ProductEdit
+export default ProductEdit;
