@@ -22,7 +22,7 @@ const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
     event.preventDefault();
     setLoading(true);
 
-    const url = "https://kingsdhaba.onrender.com/delivery/signup";
+    const url = "http://localhost:9090/delivery/signup";
     // const url =`${process.env.REACT_APP_API_URL}/delivery/signup`
     try {
       const response = await axios.post(

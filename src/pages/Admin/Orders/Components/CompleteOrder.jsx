@@ -25,7 +25,8 @@ const CompleteOrder = () => {
   const getDeliveryPersons = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/allDeliveryBoys`,
+        // `${process.env.REACT_APP_API_URL}/admin/onDutyBoys`,
+        "http://localhost:9090/admin/onDutyBoys",
         config
       );
       const offData = response.data;
@@ -37,7 +38,8 @@ const CompleteOrder = () => {
   const getusers = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/admin/allusers`,
+        // `${process.env.REACT_APP_API_URL}/admin/allusers`,
+        "http://localhost:9090/admin/allusers",
         config
       );
       const offData = response.data;
@@ -60,6 +62,14 @@ const CompleteOrder = () => {
     backgroundColor: "rgba(192,192,192)",
     fontWeight: "650",
   };
+
+  const handleAssignDb = async(_id)=>{
+    try {
+      const dbBoy = await axios.post("http://localhost:9090/admin/assignDb", config)
+    } catch (error) {
+      
+    }
+  }
 
   useEffect(() => {
     getusers();
@@ -106,7 +116,11 @@ const CompleteOrder = () => {
           </TableHead>
           <TableBody>
             {userData
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .sort((a, b) => {
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateB.getTime() - dateA.getTime();
+              })
               .map((item) => {
                 let orders = item.completedCart.concat(
                   item.canceledCart,
@@ -150,11 +164,10 @@ const CompleteOrder = () => {
                         }}
                       >
                         <option value="">Assign Delivery Boy</option>
-                        {console.log(deliveryBoy)}
-                        {deliveryBoy[0].map((db) => {
+                        {deliveryBoy && deliveryBoy[0].map((db) => {
                           console.log(db.fullname); // Log the full name to the console
                           return (
-                            <option key={db._id} value={db.fullname}>
+                            <option key={db._id} value={db.fullname} onClick={(_id)=>handleAssignDb(_id)}>
                               {db.fullname}
                             </option>
                           );

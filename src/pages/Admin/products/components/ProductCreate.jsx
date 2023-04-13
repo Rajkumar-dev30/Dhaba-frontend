@@ -42,7 +42,7 @@ const ProducCreate = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/all-products`
+        `${process.env.REACT_APP_API_URL}/product/all-products`,
       );
       const offData = response.data;
       const fullData = offData.products;

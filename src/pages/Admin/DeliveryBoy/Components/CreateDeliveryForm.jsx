@@ -122,20 +122,6 @@ const CreateDeliveryForm = () => {
     backgroundColor: "rgba(192,192,192)",
   };
 
-  // const prePage = () => {
-  //   if (currentPage !== 1) {
-  //     setCurrentPage(currentPage - 1);
-  //   }
-  // };
-  // const nextPage = () => {
-  //   if (currentPage !== npage) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-  // const ChangeCPage = (id) => {
-  //   setCurrentPage(id);
-  // };
-
   const onshowSizeChange = (current, pageSize) => {
     setPostperPage(pageSize);
   };
@@ -200,6 +186,9 @@ console.log(currentposts)
                 Status
               </TableCell>
               <TableCell align="center" style={style}>
+                onDuty
+              </TableCell>
+              <TableCell align="center" style={style}>
                 Delete
               </TableCell>
             </TableRow>
@@ -247,6 +236,9 @@ console.log(currentposts)
                         </button>
                       </TableCell>
                       <TableCell align="center" style={data}>
+                        {user.onDuty}
+                      </TableCell>
+                      <TableCell align="center" style={data}>
                         <button
                           className="delete"
                           onClick={() => Deleteuser(user._id)}
@@ -274,53 +266,6 @@ console.log(currentposts)
           />
         </div>
       </Modal>
-        {/* <div>
-          <span
-            className="pagination"
-            style={{
-              display: "flex",
-              gap: "10px",
-              justifyContent: "flex-end",
-              padding: "2rem 4rem",
-            }}
-          >
-            <span className="page-item">
-              <button
-                className="page-link"
-                onClick={prePage}
-                disabled={currentPage === 1}
-              >
-                Prev
-              </button>
-            </span>
-            {numbers.map((n, i) => (
-              <span
-                className={`page-item ${currentPage === n ? "Active" : ""}`}
-                key={i}
-              >
-                <a
-                  href="#"
-                  style={{ display: "flex" }}
-                  className="page-link"
-                  onClick={() => ChangeCPage(n)}
-                >
-                  {console.log(n)}
-                  
-                </a>
-              </span>
-            ))}
-
-            <span className="page-item">
-              <button
-                className="page-link"
-                onClick={nextPage}
-                disabled={currentPage === npage}
-              >
-                Next
-              </button>
-            </span>
-          </span>
-        </div> */}
         <Pagination
           className="pagination"
           onChange={(value) => setpage(value)}
