@@ -12,6 +12,12 @@ const CompleteOrder = () => {
   const [userlength, setUserlength] = useState(0);
   const [deliveryBoy, setDeliveryBoy] = useState();
 
+  const [filter, setFilter] = useState("all"); // Default filter is "all"
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
 
@@ -25,8 +31,8 @@ const CompleteOrder = () => {
   const getDeliveryPersons = async () => {
     try {
       const response = await axios.get(
-        // `${process.env.REACT_APP_API_URL}/admin/onDutyBoys`,
-        "http://localhost:9090/admin/onDutyBoys",
+        `${process.env.REACT_APP_API_URL}/admin/onDutyBoys`,
+        // "http://localhost:9090/admin/onDutyBoys",
         config
       );
       const offData = response.data;
@@ -45,8 +51,6 @@ const CompleteOrder = () => {
       const offData = response.data;
       const fullData = offData.response;
       setUserData(fullData);
-      console.log(fullData);
-
       if (fullData.length > 0) {
         const length = fullData.length;
         setUserlength(length);
@@ -63,13 +67,26 @@ const CompleteOrder = () => {
     fontWeight: "650",
   };
 
-  const handleAssignDb = async(_id)=>{
+  const handleAssignDb = async (cartId, deliveryBoyId) => {
     try {
-      const dbBoy = await axios.post("http://localhost:9090/admin/assignDb", config)
+      const response = await fetch(
+        // `http://localhost:9090/admin/assignDb/${cartId}`,
+        `${process.env.REACT_APP_API_URL}/admin/assignDb/${cartId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ deliveryBoyId }),
+        }
+      );
+      getusers();
+      console.log(response);
     } catch (error) {
-      
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     getusers();
@@ -78,6 +95,20 @@ const CompleteOrder = () => {
 
   return (
     <div>
+      <div style={{ marginBottom: 10 }}>
+        <button value="all" onClick={handleFilterChange}>
+          All Orders
+        </button>
+        <button value="ordered" onClick={handleFilterChange}>
+          Ordered
+        </button>
+        <button value="Self-pickup" onClick={handleFilterChange}>
+          Self Pickup
+        </button>
+        <button value="canceled" onClick={handleFilterChange}>
+          Canceled
+        </button>
+      </div>
       <TableContainer>
         <Table>
           <TableHead>
@@ -117,15 +148,39 @@ const CompleteOrder = () => {
           <TableBody>
             {userData
               .sort((a, b) => {
-                const dateA = new Date(a.createdAt);
-                const dateB = new Date(b.createdAt);
-                return dateB.getTime() - dateA.getTime();
+              const dateA = new Date(a.createdAt);
+              const dateB = new Date(b.createdAt);
+              return dateB.getTime() - dateA.getTime();
+            })
+              .filter((item) => {
+                if (filter === "all") {
+                  return true;
+                } else {
+                  let orders = [];
+                  if (filter === "ordered") {
+                    orders = item.completedCart;
+                  } else if (filter === "Self-pickup") {
+                    orders = item.selfPickupCart;
+                  } else if (filter === "canceled") {
+                    orders = item.canceledCart;
+                  }
+                  return orders.length > 0;
+                }
               })
               .map((item) => {
-                let orders = item.completedCart.concat(
-                  item.canceledCart,
-                  item.selfPickupCart
-                );
+                let orders = [];
+                if (filter === "ordered") {
+                  orders = item.completedCart;
+                } else if (filter === "Self-pickup") {
+                  orders = item.selfPickupCart;
+                } else if (filter === "canceled") {
+                  orders = item.canceledCart;
+                } else {
+                  orders = item.completedCart.concat(
+                    item.canceledCart,
+                    item.selfPickupCart
+                  );
+                }
                 return orders.map((order) => (
                   <TableRow key={order} sx={{ styles }}>
                     <TableCell align="center">{item.fullname}</TableCell>
@@ -142,7 +197,7 @@ const CompleteOrder = () => {
                     </TableCell>
                     <TableCell align="center">{order.status}</TableCell>
                     <TableCell align="center">
-                      {new Date(order.createdAt).toLocaleString("en-GB", {
+                      {new Date(order.createdAt).toLocaleString("en-IN", {
                         timeZone: "Asia/Kolkata",
                         day: "numeric",
                         month: "numeric",
@@ -156,23 +211,32 @@ const CompleteOrder = () => {
                     <TableCell align="center">{order.transactionId}</TableCell>
                     <TableCell align="center">{order.ReceivedAmount}</TableCell>
                     <TableCell align="center">
-                      <select
-                        value={order.deliveryPerson}
-                        onChange={(event) => {
-                          // Set the selected delivery boy for the order
-                          // order.deliveryPerson = event.target.value;
-                        }}
-                      >
-                        <option value="">Assign Delivery Boy</option>
-                        {deliveryBoy && deliveryBoy[0].map((db) => {
-                          console.log(db.fullname); // Log the full name to the console
-                          return (
-                            <option key={db._id} value={db.fullname} onClick={(_id)=>handleAssignDb(_id)}>
-                              {db.fullname}
-                            </option>
-                          );
-                        })}
-                      </select>
+                      {order.deliveryPerson ? (
+                        order.deliveryPerson
+                      ) : (
+                        <select
+                          value=""
+                          onChange={(event) => {
+                            const deliveryBoyId = event.target.value;
+                            handleAssignDb(order.cartId, deliveryBoyId);
+                          }}
+                          disabled={
+                            order.deliveryPerson !== undefined ||
+                            order.status === "Self-pickup" ||
+                            order.status === "canceled"
+                          }
+                        >
+                          <option value="">Assign Delivery Boy</option>
+                          {deliveryBoy &&
+                            deliveryBoy[0].map((db) => {
+                              return (
+                                <option key={db._id} value={db._id.toString()}>
+                                  {db.fullname}
+                                </option>
+                              );
+                            })}
+                        </select>
+                      )}
                     </TableCell>
                   </TableRow>
                 ));
