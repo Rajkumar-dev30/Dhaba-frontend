@@ -43,7 +43,7 @@ const CreateUser = () => {
         config
       );
       const offData = response.data;
-      const fullData = offData.response;
+      const fullData = offData.response.users;
 
       setUserdata(fullData);
 

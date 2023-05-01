@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./productdata.scss";
+
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Modal } from "@mui/material";
 import ProductEdit from "../../../../components/productPopup/ProductEdit";
 import ProductAdd from "../../../../components/productPopup/ProductAdd";
@@ -19,7 +24,7 @@ const ProducCreate = () => {
   const [openModal2, setOpenModal2] = useState(false);
   const [search, setsearch] = useState("");
   const [exclusive, setExclusive] = useState(true);
-
+  const [loading, setLoading] = useState(false)
   // table pagination
   const [postperPage, setPostperPage] = useState(5);
   const [total, setTotal] = useState("");
@@ -57,7 +62,7 @@ const ProducCreate = () => {
       console.log(error);
     }
   };
-  
+
 
   const handleEdit = (_id) => {
     setProductId(_id);
@@ -70,11 +75,23 @@ const ProducCreate = () => {
   };
 
   const handleDelete = async (_id) => {
+    setLoading(true)
+
     await axios.delete(
       `${process.env.REACT_APP_API_URL}/product/delete-product/${_id}`,
       config
     );
     getProducts();
+    toast.success(' Sucessfully Deleted!', {
+      position: "top-center",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   const handleModel2 = () => {
@@ -83,6 +100,7 @@ const ProducCreate = () => {
 
   const handleCloseModal2 = () => {
     setOpenModal2(false);
+    getProducts();
   };
 
   const toggleStatus = async (_id) => {
@@ -160,7 +178,7 @@ const ProducCreate = () => {
         setExclusive(false);
       }
 
-      console.log("added  "+response.data.product._id);
+      console.log("added  " + response.data.product._id);
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -340,6 +358,18 @@ const ProducCreate = () => {
                     >
                       Delete
                     </button>
+                    <ToastContainer
+                      position="top-center"
+                      autoClose={2500}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="colored"
+                    />
                   </TableCell>
                   <TableCell style={Exclusive} align="center">
                     <div className="buttons">

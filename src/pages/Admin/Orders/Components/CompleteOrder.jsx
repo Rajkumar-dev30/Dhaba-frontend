@@ -49,7 +49,7 @@ const CompleteOrder = () => {
         config
       );
       const offData = response.data;
-      const fullData = offData.response;
+      const fullData = offData.response.users;
       setUserData(fullData);
       if (fullData.length > 0) {
         const length = fullData.length;

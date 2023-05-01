@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./productedit.scss";
+import Popup from "../PopupforAdd/Popup";
 
 const ProductAdd = ({ handleCloseModal2, getProducts }) => {
   const [productData, setProductData] = useState([]);
-  
+
   const [productName, setProductName] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [description, setDescription] = useState("");
@@ -79,11 +80,13 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
     } finally {
       setLoading(false);
       handleCloseModal2();
+      getProducts();
     }
   };
 
   const handleClose = () => {
     handleCloseModal2();
+    getProducts();
   };
   useEffect(() => {
     getProducts();
@@ -91,7 +94,7 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
 
   return (
     <>
-      <div className="product-model">
+      {loading ? <Popup /> : <div className="product-model">
         <div className="edit-form">
           <h1>Create Product</h1>
           <div className="edit-style">
@@ -106,7 +109,7 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
             <div className="right-edit">
               <input
                 type="text"
-                id="product-name"
+                id="product-name"xx 
                 value={productName}
                 placeholder={productData.productName}
                 onChange={handleProductNameChange}
@@ -160,7 +163,9 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
             </button>
           </div>
         </div>
+
       </div>
+      }
     </>
   );
 };
