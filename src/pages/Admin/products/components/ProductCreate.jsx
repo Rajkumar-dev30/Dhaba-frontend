@@ -42,8 +42,8 @@ const ProducCreate = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        // `${process.env.REACT_APP_API_URL}/product/get-all-products`,
-        `http://localhost:9090/product/get-all-products`
+        `${process.env.REACT_APP_API_URL}/product/get-all-products`,
+        // `http://localhost:9090/product/get-all-products`
       );
       const offData = response.data;
       const fullData = offData.products;

@@ -14,6 +14,7 @@ const DashboardData = () => {
   const [userLength, setUserLength] = useState("");
   const [categoryLength, setCategoryLength] = useState("");
   const [productLength, setProductLength] = useState("");
+  const [orderLength, setOrderLength] = useState("")
   // const [orderlength,setOrderlength]=useState(OrderApi.length)
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -28,11 +29,14 @@ const DashboardData = () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/admin/allusers`,
+        // `http://localhost:9090/admin/allusers`,
         config
       );
       const offData = response.data;
-      const fullData = offData.response;
+      const fullData = offData.response.users;
+      const orderLen = offData.response.totalCartsCount
       setUserData(fullData);
+      setOrderLength(orderLen);
       if (fullData.length > 0) {
         const length = fullData.length;
         setUserLength(length);
@@ -59,7 +63,7 @@ const DashboardData = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/all-products`
+        `${process.env.REACT_APP_API_URL}/product/get-all-products`
       );
       const offData = response.data;
       const fullData = offData.products;
@@ -72,6 +76,7 @@ const DashboardData = () => {
       console.log(error);
     }
   };
+
 
   useEffect(() => {
     getUsers();
@@ -103,7 +108,7 @@ const DashboardData = () => {
     },
     {
       head: "Total Orders",
-      // length: orderlength,
+      length: orderLength,
       logo: <IoFastFoodOutline size={70} opacity=".3" />,
       color: "#DC3545",
       path:"/admin/orders"
