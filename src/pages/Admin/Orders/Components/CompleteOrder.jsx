@@ -44,8 +44,8 @@ const CompleteOrder = () => {
   const getusers = async () => {
     try {
       const response = await axios.get(
-        // `${process.env.REACT_APP_API_URL}/admin/allusers`,
-        "http://localhost:9090/admin/allusers",
+        `${process.env.REACT_APP_API_URL}/admin/allusers`,
+        // "http://localhost:9090/admin/allusers",
         config
       );
       const offData = response.data;
