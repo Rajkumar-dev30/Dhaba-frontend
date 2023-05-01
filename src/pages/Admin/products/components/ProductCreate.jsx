@@ -42,7 +42,8 @@ const ProducCreate = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/all-products`,
+        // `${process.env.REACT_APP_API_URL}/product/get-all-products`,
+        `http://localhost:9090/product/get-all-products`
       );
       const offData = response.data;
       const fullData = offData.products;
@@ -56,9 +57,7 @@ const ProducCreate = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getProducts();
-  }, []);
+  
 
   const handleEdit = (_id) => {
     setProductId(_id);
@@ -161,8 +160,8 @@ const ProducCreate = () => {
         setExclusive(false);
       }
 
-      console.log(response.data.product._id);
-      console.log(productData);
+      console.log("added  "+response.data.product._id);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -249,7 +248,7 @@ const ProducCreate = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {productData
+            {currentposts
               .filter((item) => {
                 if (search === "") {
                   return item;

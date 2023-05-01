@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import DeliveryBoyAdd from "../../../../components/DelieveryboyPopup/DeliveryBoyAdd";
 import { Pagination } from "antd";
 import {
@@ -16,7 +18,6 @@ const CreateDeliveryForm = () => {
   const [userData, setUserdata] = useState([]);
   const [userlength, setUserlength] = useState(0);
   const [search, setSearch] = useState("");
-
   // const [currentPage, setCurrentPage] = useState(1);
   // const recordsPerpage = 3;
   // const lastIndex = currentPage * recordsPerpage;
@@ -28,7 +29,6 @@ const CreateDeliveryForm = () => {
   const [postperPage, setPostperPage] = useState(2);
   const [total, setTotal] = useState("");
   const [page, setpage] = useState(1);
-  const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
 
   const indexOfLastpage = page * postperPage;
@@ -68,7 +68,18 @@ const CreateDeliveryForm = () => {
   };
   console.log(userlength);
   console.log(page);
+
   const Deleteuser = async (_id) => {
+    toast.success(' Sucessfully Deleted!', {
+      position: "top-center",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     await axios.delete(
       `${process.env.REACT_APP_API_URL}/admin/deliveryBoy/${_id}`,
       config
@@ -122,6 +133,20 @@ const CreateDeliveryForm = () => {
     backgroundColor: "rgba(192,192,192)",
   };
 
+  // const prePage = () => {
+  //   if (currentPage !== 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
+  // const nextPage = () => {
+  //   if (currentPage !== npage) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
+  // const ChangeCPage = (id) => {
+  //   setCurrentPage(id);
+  // };
+
   const onshowSizeChange = (current, pageSize) => {
     setPostperPage(pageSize);
   };
@@ -145,9 +170,10 @@ const CreateDeliveryForm = () => {
   useEffect(() => {
     getusers();
   }, []);
-console.log(currentposts)
+  console.log(currentposts)
   return (
     <>
+
       <div className="searchbar">
         <h3 style={{ padding: "15px 0 0 15px" }}>Total Users: {userlength}</h3>
 
@@ -184,9 +210,6 @@ console.log(currentposts)
               </TableCell>
               <TableCell align="center" style={style}>
                 Status
-              </TableCell>
-              <TableCell align="center" style={style}>
-                onDuty
               </TableCell>
               <TableCell align="center" style={style}>
                 Delete
@@ -235,37 +258,50 @@ console.log(currentposts)
                           {user.status === "active" ? "Active" : "InActive"}
                         </button>
                       </TableCell>
+
                       <TableCell align="center" style={data}>
-                        {user.onDuty}
-                      </TableCell>
-                      <TableCell align="center" style={data}>
+
                         <button
                           className="delete"
                           onClick={() => Deleteuser(user._id)}
                         >
                           Delete
                         </button>
+                        <ToastContainer
+                      position="top-center"
+                      autoClose={2500}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="colored"
+                    />
                       </TableCell>
+
                     </TableRow>
                   ))}
               </>
-            ))} 
+            ))}
 
-            
+
           </TableBody>
         </Table>
       </TableContainer>
 
       <div>
-      <Modal open={openModal2} onClose={handleCloseModal2}>
-        <div>
-          <DeliveryBoyAdd
-            openModal2={openModal2}
-            handleCloseModal2={handleCloseModal2}
-            getusers={getusers}
-          />
-        </div>
-      </Modal>
+        <Modal open={openModal2} onClose={handleCloseModal2}>
+          <div>
+            <DeliveryBoyAdd
+              openModal2={openModal2}
+              handleCloseModal2={handleCloseModal2}
+              getusers={getusers}
+            />
+          </div>
+        </Modal>
+        
         <Pagination
           className="pagination"
           onChange={(value) => setpage(value)}

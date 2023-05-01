@@ -59,7 +59,7 @@ const DealsAdd = ({ handleCloseModal2, getProducts }) => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/deals/create-product`,
+        `${process.env.REACT_APP_API_URL}/product/create-product`,
         formData,
         config
       );

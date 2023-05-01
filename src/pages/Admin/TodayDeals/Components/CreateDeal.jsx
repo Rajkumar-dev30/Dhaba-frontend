@@ -48,7 +48,8 @@ const Createdeal = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/get-exclusiveDishes `
+        `${process.env.REACT_APP_API_URL}/product/exclusive-dishes `
+        // `http://localhost:9090/product/exclusive-dishes`
       );
       const offData = response.data;
       const fullData = offData.products;
@@ -79,7 +80,7 @@ const Createdeal = () => {
 
   const handleDelete = async (_id) => {
     await axios.delete(
-      `${process.env.REACT_APP_API_URL}/deals/delete-product/${_id}`,
+      `${process.env.REACT_APP_API_URL}/product/delete-product/${_id}`,
       config
     );
     getProducts();
@@ -96,7 +97,7 @@ const Createdeal = () => {
   const toggleStatus = async (_id) => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/deals/single-product/toggleStatus/${_id}`,
+        `${process.env.REACT_APP_API_URL}/product/single-product/toggleStatus/${_id}`,
         null,
         config
       );
@@ -327,45 +328,6 @@ const Createdeal = () => {
           />
         </div>
       </Modal>
-
-      {/* <div>
-        <span
-          className="pagination"
-          style={{
-            display: "flex",
-            gap: "10px",
-            justifyContent: "flex-end",
-            padding: "2rem 4rem",
-          }}
-        >
-          <span className="page-item">
-            <button className="page-link" onClick={prePage} disabled={currentPage===1}>
-              Prev
-            </button>
-          </span>
-          {numbers.map((n, i) => (
-            <span
-              className={`page-item ${currentPage === n ? "Active" : ""}`}
-              key={i}
-            >
-              <a
-                href="#"
-                style={{ display: "flex" }}
-                className="page-link"
-                onClick={() => ChangeCPage(n)}
-              >
-                {n}
-              </a>
-            </span>
-          ))}
-
-          <span className="page-item">
-            <button className="page-link" onClick={nextPage} disabled={currentPage===npage}>
-              Next
-            </button>
-          </span>
-        </span>
-      </div> */}
       <Pagination
         className="pagination"
         onChange={(value) => setpage(value)}

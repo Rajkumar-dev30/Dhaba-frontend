@@ -11,6 +11,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood";
 import InfoIcon from '@mui/icons-material/Info';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import { SideBarContext } from "../../Contex/SidebarContext";
+
 const Sidebar = () => {
   const Styles = ({ isActive }) => {
     return {
@@ -20,12 +21,11 @@ const Sidebar = () => {
       justifyContent: "flex-start",
       alignItems: "center",
       gap: "15px",
-
       height: "40px",
       borderRadius: "5px",
     };
   };
-  const { Close, handleSidebarView } = useContext(SideBarContext);
+  const { Close } = useContext(SideBarContext);
   return (
     <>
       <div
@@ -33,45 +33,53 @@ const Sidebar = () => {
         style={{ width: Close ? "15vw" : "5vw", transition: "all .6s " }}
       >
         <div className="top">
-          <img src={require("../../assets/king dhaba admin logo.png")} alt="" /> 
+          <img src={require("../../assets/king dhaba admin logo.png")} alt="" />
           <h2 style={{ display: Close ? "block" : "none" }}>Admin</h2>
         </div>
         <div className="middle">
+
           <NavLink style={Styles} to="/admin/dashboard">
-            <DashboardIcon className="icon" />
-            <h3 style={{ display: Close ? "block" : "none" }}>Dashboard</h3>
+            <abbr title="Dashboard"> <DashboardIcon className="icon" /></abbr>
+            <h3 className={Close ? "open" : "close"}>Dashboard</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/categories">
-            <CategoryIcon />
-            <h3 style={{ display: Close ? "block" : "none" }}>Categories</h3>
+            <abbr title="Categories"><CategoryIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>Categories</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/products">
-            <AppsIcon />
+            <abbr title="Products">  <AppsIcon /></abbr>
             <h3 style={{ display: Close ? "block" : "none" }}>Products</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/users">
-            <PersonIcon />
-            <h3 style={{ display: Close ? "block" : "none" }}>Users</h3>
+            <abbr title="Users"><PersonIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>Users</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/deals">
-            <LocalOfferIcon />
+            <abbr title="Today Deals"> <LocalOfferIcon /></abbr>
             <h3 style={{ display: Close ? "block" : "none" }}>Today Deals</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/deliveryboy">
-            <DirectionsBikeIcon />
-            <h3 style={{ display: Close ? "block" : "none" }}>Delivery Boy</h3>
+            <abbr title="Delivery Boy"> <DirectionsBikeIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>Delivery Boy</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/orders">
-            <FastfoodIcon />
-            <h3 style={{ display: Close ? "block" : "none" }}>Orders</h3>
+            <abbr title="Orders"> <FastfoodIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>Orders</h3>
           </NavLink>
           <NavLink style={Styles} to="/admin/aboutus">
-            <InfoIcon />
-            <h3 style={{ display: Close ? "block" : "none" }}>About Us</h3>
+            <abbr title="About Us"><InfoIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>About Us</h3>
           </NavLink>
+
           <NavLink style={Styles} to="/admin/privacypolicy">
-            <PrivacyTipIcon />
-            <h3 style={{ display: Close ? "block" : "none" }}>Privacy Policy</h3>
+            <abbr title="Privacy Policy"><PrivacyTipIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>Privacy Policy</h3>
           </NavLink>
         </div>
       </div>

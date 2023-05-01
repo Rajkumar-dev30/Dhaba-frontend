@@ -33,7 +33,9 @@ const ProductEdit = ({
     setProductEditId(_id);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/product/single-product/${_id}`,
+        `${process.env.REACT_APP_API_URL}/product/get-single-product/${_id}`,
+        // `http://localhost:9090/product/get-single-product/${_id}`,
+
         config
       );
       const productData = response.data;

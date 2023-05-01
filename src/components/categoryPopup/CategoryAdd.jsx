@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./categoryedit.scss";
+import Popup from "../PopupforAdd/Popup";
 const CategoryAdd = ({ handleCloseModal2, getCategories }) => {
   const [categoryName, setCategoryName] = useState("");
   const [avatar, setAvatar] = useState(null);
@@ -57,9 +58,10 @@ const CategoryAdd = ({ handleCloseModal2, getCategories }) => {
   useEffect(() => {
     getCategories();
   }, []);
+  
   return (
     <div>
-      <div className="category-model">
+      {loading?<Popup/>:<div className="category-model">
         <div className="cat-edit-form">
           <h1>Create Category</h1>
           <div className="edit-style">
@@ -90,14 +92,14 @@ const CategoryAdd = ({ handleCloseModal2, getCategories }) => {
               disabled={loading}
               onClick={handleSubmit}
             >
-              {loading ? "Loading..." : "Add"}
+               Add
             </button>
             <button className="close-button" onClick={handleClose}>
               Close
             </button>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

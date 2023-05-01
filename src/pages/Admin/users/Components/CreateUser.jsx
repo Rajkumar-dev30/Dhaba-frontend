@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Pagination } from "antd";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "../users.scss";
 import {
   Table,
@@ -16,7 +18,7 @@ const CreateUser = () => {
   const [userlength, setUserlength] = useState(0);
   const [search, setSearch] = useState("");
 
-  const [postperPage, setPostperPage] = useState(5);
+  const [postperPage, setPostperPage] = useState(7);
   const [total, setTotal] = useState("");
   const [page, setpage] = useState(1);
 
@@ -57,6 +59,16 @@ const CreateUser = () => {
   console.log(userlength);
   console.log(page);
   const Deleteuser = async (_id) => {
+    toast.success(' Sucessfully Deleted!', {
+      position: "top-center",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
     await axios.delete(
       `${process.env.REACT_APP_API_URL}/admin/user/${_id}`,
       config
@@ -93,7 +105,7 @@ const CreateUser = () => {
   };
 
   const data = {
-    boxShadow: "0 3px 1px rgba(0,0,0,.3)",
+    boxShadow: "0 2px 0px rgba(0,0,0,.3)",
   };
   const style = {
     fontWeight: "bold",
@@ -101,12 +113,12 @@ const CreateUser = () => {
   };
   const status = {
     color: "green",
-    boxShadow: "0 3px 1px rgba(0,0,0,.3)",
+    boxShadow: "0 2px 0px rgba(0,0,0,.3)",
     fontWeight: "550",
   };
   const name = {
     fontWeight: "bold",
-    borderLeft: "3px solid rgba(0,0,0,0.3)",
+
     backgroundColor: "rgba(192,192,192)",
   };
 
@@ -207,6 +219,18 @@ const CreateUser = () => {
                     >
                       Delete
                     </button>
+                    <ToastContainer
+                      position="top-center"
+                      autoClose={2500}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="colored"
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -215,54 +239,6 @@ const CreateUser = () => {
       </TableContainer>
 
       <div>
-        {/* <div>
-          <span
-            className="pagination"
-            style={{
-              display: "flex",
-              gap: "10px",
-              justifyContent: "flex-end",
-              padding: "2rem 4rem",
-            }}
-          >
-            <span className="page-item">
-              <button
-                className="page-link"
-                onClick={prePage}
-                disabled={currentPage === 1}
-              >
-                Prev
-              </button>
-            </span>
-            {numbers.map((n, i) => (
-              <span
-                className={`page-item ${currentPage === n ? "Active" : ""}`}
-                key={i}
-              >
-                <a
-                  href="#"
-                  style={{ display: "flex" }}
-                  className="page-link"
-                  onClick={() => ChangeCPage(n)}
-                >
-                  {console.log(n)}
-                  
-                </a>
-              </span>
-            ))}
-
-            <span className="page-item">
-              <button
-                className="page-link"
-                onClick={nextPage}
-                disabled={currentPage === npage}
-              >
-                Next
-              </button>
-            </span>
-          </span>
-        </div> */}
-
         <Pagination
           className="pagination"
           onChange={(value) => setpage(value)}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Deliveryboy.scss";
+import Loading from "../../pages/Admin/login/Loading/Loading";
 
 const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
   const [fullName, setFullName] = useState("");
@@ -22,7 +23,7 @@ const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
     event.preventDefault();
     setLoading(true);
 
-    const url = "http://localhost:9090/delivery/signup";
+    const url = "https://kingsdhaba.onrender.com/delivery/signup";
     // const url =`${process.env.REACT_APP_API_URL}/delivery/signup`
     try {
       const response = await axios.post(
@@ -53,11 +54,11 @@ const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
 
   return (
     <>
-      <div className="product-model">
+      {loading ? <Loading /> : <div className="product-model Delivery">
         <div className="edit-form">
           <h1>Create Delivery Boy Details</h1>
           <div className="edit-style">
-            <div className="labels">
+            <div className="labels DeliveryBoyLabels">
               <label htmlFor="delivery-name">FullName :</label>
               <label htmlFor="delivery-mobile">Mobile:</label>
               <label htmlFor="delivery-password">Password :</label>
@@ -69,26 +70,26 @@ const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
                   type="text"
                   value={fullName}
                   name="fullname"
-                  className="inpu"
+                  className="ipt"
                   onChange={(e) => setFullName(e.target.value)}
                 />
                 <input
                   type="Number"
                   name="mobile"
-                  className="inpu"
+                  className="ipt"
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
                 />
                 <input
                   type="text"
                   name="password"
-                  className="inpu"
+                  className="ipt"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <input
                   type="text"
-                  className="inpu"
+                  className="ipt"
                   name="area"
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
@@ -99,9 +100,9 @@ const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
                       className="update-button"
                       type="buttons"
                       disabled={loading}
-                      // onClick={handleSubmit}
+                    // onClick={handleSubmit}
                     >
-                      {loading ? "Loading..." : "Add"}
+                      Add
                     </button>
 
                     <button className="close-button" onClick={handleClose}>
@@ -114,6 +115,7 @@ const DeliveryBoyAdd = ({ handleCloseModal2, getusers }) => {
           </div>
         </div>
       </div>
+      }
     </>
   );
 };

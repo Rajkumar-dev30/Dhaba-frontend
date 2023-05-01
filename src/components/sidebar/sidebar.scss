@@ -9,7 +9,6 @@
   color: white;
   padding: 10%;
   gap: 5vh;
-
   .top {
     display: flex;
     justify-content: center;
@@ -28,10 +27,28 @@
     flex-direction: column;
     gap: 0.5vh;
   }
-  
 }
-.middle h3:hover  {
-  color: red;
+.middle h3:hover {
+  color: rgb(5, 177, 212);
+}
+.open {
+  display: block;
+}
+.close {
+  display: none;
+}
+.close:hover {
+  display: block;
 }
 
-
+abbr:hover::before {
+  content: attr(title);
+  position: absolute;
+  background: #182c3d;
+  color: #fff;
+  padding: 5px 10px;
+  margin: -4px 0 0 25px;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 10%;
+}

@@ -5,6 +5,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import { IoAppsOutline, IoFastFoodOutline } from "react-icons/io5";
 import "../dashboard.scss";
+// import OrderApi from '../../Orders/Components/OrderApi'
 import { NavLink } from "react-router-dom";
 const DashboardData = () => {
   const [userData, setUserData] = useState("");
@@ -13,6 +14,7 @@ const DashboardData = () => {
   const [userLength, setUserLength] = useState("");
   const [categoryLength, setCategoryLength] = useState("");
   const [productLength, setProductLength] = useState("");
+  // const [orderlength,setOrderlength]=useState(OrderApi.length)
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
 
@@ -101,10 +103,12 @@ const DashboardData = () => {
     },
     {
       head: "Total Orders",
-      length: productLength,
+      // length: orderlength,
       logo: <IoFastFoodOutline size={70} opacity=".3" />,
       color: "#DC3545",
+      path:"/admin/orders"
     },
+
   ];
   const [shake, setshake] = useState(true);
   return (

@@ -27,7 +27,7 @@ const DealsEdit = ({ openModal, handleCloseModal, getProducts, productId }) => {
     setProductEditId(_id);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/deals/single-product/${_id}`,
+        `${process.env.REACT_APP_API_URL}/product/get-single-product/${_id}`,
         config
       );
       const productData = response.data;
@@ -94,7 +94,7 @@ const DealsEdit = ({ openModal, handleCloseModal, getProducts, productId }) => {
 
     try {
       await axios.patch(
-        `${process.env.REACT_APP_API_URL}/deals/update-product/${productEditId}`,
+        `${process.env.REACT_APP_API_URL}/product/update-product/${productId}`,
         formDataToUpdate,
         config
       );

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./createcategory.scss";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Modal } from "@mui/material";
 import CategoryEdit from "../../../../components/categoryPopup/CategoryEdit";
 import CategoryAdd from "../../../../components/categoryPopup/CategoryAdd";
@@ -18,7 +21,7 @@ const CategoriesList = () => {
   const [openModal2, setOpenModal2] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState(null);
   const [search, setsearch] = useState("");
-
+  const [loading, setLoading] = useState(false)
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
 
@@ -61,12 +64,23 @@ const CategoriesList = () => {
     setOpenModal2(false);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, i) => {
+    setLoading(true)
     await axios.delete(
       `${process.env.REACT_APP_API_URL}/category/delete-category/${id}`,
       config
     );
     getCategories();
+    toast.success(' Sucessfully Deleted!', {
+      position: "top-center",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   const toggleStatus = async (id) => {
@@ -103,15 +117,16 @@ const CategoriesList = () => {
     backgroundColor: "rgba(192,192,192)",
   };
   const style = {
-    boxShadow: "0px 2px 1px rgba(0,0,0,0.3)",
+    boxShadow: "0px 2px 0px rgba(0,0,0,0.3)",
   };
   const image = {
     fontWeight: "bold",
-    borderLeft: "3px solid rgba(0,0,0,.3)",
     backgroundColor: "rgba(192,192,192)",
   };
   return (
     <div className="categories">
+
+
       <div className="searchbar">
         <h3 style={{ padding: "15px 0 0 15px" }}>
           Total Categories: {categoryLength}
@@ -224,7 +239,21 @@ const CategoriesList = () => {
                       onClick={() => handleDelete(category.id)}
                     >
                       Delete
+
                     </button>
+                    <ToastContainer
+                      position="top-center"
+                      autoClose={2500}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="colored"
+                    />
+
                   </TableCell>
                 </TableRow>
               ))}
@@ -251,6 +280,7 @@ const CategoriesList = () => {
           />
         </div>
       </Modal>
+
     </div>
   );
 };
