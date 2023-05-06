@@ -4,9 +4,19 @@ import "./notificationForm.scss";
 
 const NotificationForm = () => {
   const [userData, setUserData] = useState([]);
-  const [userLength, setUserLength] = useState(0);
   const [deliveryData, setDeliveryData] = useState([]);
-  const [deliveryLength, setDeliveryLength] = useState(0);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [notificationData, setNotificationData] = useState({
+    title: "",
+    message: "",
+  });
+  const [notificationSent, setNotificationSent] = useState(false);
+  const [selectedBoy, setSelectedBoy] = useState(null);
+  const [notificationDataforBoy, setNotificationDataforBoy] = useState({
+    title: "",
+    message: "",
+  });
+  const [notificationSentforBoy, setNotificationSentforBoy] = useState(false);
 
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
@@ -27,10 +37,6 @@ const NotificationForm = () => {
       const offData = response.data;
       const fullData = offData.response.users;
       setUserData(fullData);
-
-      if (fullData.length > 0) {
-        setUserLength(fullData.length);
-      }
     } catch (error) {
       console.log(error);
     }
@@ -51,39 +57,157 @@ const NotificationForm = () => {
     }
   };
 
-  useEffect(() => {
-    getUsers();
-    getDeliveryBoys();
-  });
-
   const handleUserSelection = (event) => {
     const selectedValue = event.target.value;
 
-    if (selectedValue === "all") {
-      // Logic for selecting all users
-      console.log("All Users selected", userData);
+    if (selectedValue === "allUsers") {
+      setSelectedUser(null);
     } else {
-      // Logic for selecting a specific user
       const selectedUser = userData.find((user) => user.id === selectedValue);
-      console.log("Selected User:", selectedUser);
+      setSelectedUser(selectedUser);
     }
   };
 
-  const handleDeliverySelection = (event) => {
-  const selectedValue = event.target.value;
-  
-  if (selectedValue === "all") {
-    // Logic for selecting all users
-    console.log("All Users selected");
-    console.log("Selected Users:", deliveryData[0]);
-  } else {
-    // Logic for selecting a specific user
-    const selectedUser = deliveryData[0].find((item) => item._id === selectedValue);
-    console.log("Selected User:", selectedUser);
-  }
-};
+  const handleBoySelection = (event) => {
+    const selectedValue = event.target.value;
+    if (selectedValue === "allBoys") {
+      setSelectedBoy(null);
+    } else {
+      const selectedBoy = deliveryData[0].find(
+        (item) => item._id === selectedValue
+      );
+      setSelectedBoy(selectedBoy);
+    }
+  };
 
+  const handleTitleChange = (event) => {
+    setNotificationData((prevData) => ({
+      ...prevData,
+      title: event.target.value,
+    }));
+  };
+  const handleMessageChange = (event) => {
+    setNotificationData((prevData) => ({
+      ...prevData,
+      message: event.target.value,
+    }));
+  };
+  const handleTitleChangeForBoy = (event) => {
+    setNotificationDataforBoy((prevData) => ({
+      ...prevData,
+      title: event.target.value,
+    }));
+  };
 
+  const handleMessageChangeForBoy = (event) => {
+    setNotificationDataforBoy((prevData) => ({
+      ...prevData,
+      message: event.target.value,
+    }));
+  };
+  const handleSubmit = async () => {
+    if (!selectedUser && userData.length === 0) {
+      alert("No users available");
+      return;
+    }
+
+    if (notificationData.title === "" || notificationData.message === "") {
+      alert("Please enter a title and message");
+      return;
+    }
+
+    const requestData = {
+      userId: selectedUser ? selectedUser.id : "allUsers",
+      title: notificationData.title,
+      message: notificationData.message,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/admin/send-notification`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Update the content type to JSON
+          },
+          body: JSON.stringify(requestData), // Convert the requestData object to JSON string
+        }
+      );
+
+      const data = await response.json(); // Parse the response body as JSON
+
+      console.log(data);
+      if (response.ok) {
+        setNotificationSent(true);
+        setSelectedUser(null);
+        setNotificationData({
+          title: "",
+          message: "",
+        });
+      } else {
+        setNotificationSent(false);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleSubmitForBoy = async () => {
+    if (!selectedBoy && deliveryData.length === 0) {
+      alert("No delivery boys available");
+      return;
+    }
+
+    if (
+      notificationDataforBoy.title === "" ||
+      notificationDataforBoy.message === ""
+    ) {
+      alert("Please enter a title and message");
+      return;
+    }
+
+    const requestDataforBoy = {
+      deliveryBoyId: selectedBoy ? selectedBoy._id : "allBoys",
+      title: notificationDataforBoy.title,
+      message: notificationDataforBoy.message,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/admin/send-notification-deliveryBoy`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Update the content type to JSON
+          },
+          body: JSON.stringify(requestDataforBoy), // Convert the requestData object to JSON string
+        }
+      );
+
+      const data = await response.json(); // Parse the response body as JSON
+
+      console.log(data);
+      if (response.ok) {
+        setNotificationSentforBoy(true);
+        setSelectedBoy(null);
+        setNotificationDataforBoy({
+          title: "",
+          message: "",
+        });
+      } else {
+        setNotificationSentforBoy(false);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+    getDeliveryBoys();
+  }, []);
   return (
     <div className="notifications-box">
       <div className="user-notification-box">
@@ -108,11 +232,25 @@ const NotificationForm = () => {
                 </option>
               ))}
             </select>
-            <input type="text" placeholder="Title" />
-            <textarea placeholder="Message" />
+            <input
+              type="text"
+              placeholder="Title"
+              value={notificationData.title}
+              onChange={handleTitleChange}
+            />
+            <textarea
+              placeholder="Message"
+              value={notificationData.message}
+              onChange={handleMessageChange}
+            />
           </div>
         </div>
-        <button>Submit</button>
+        <button onClick={handleSubmit}>Submit</button>
+        {notificationSent && (
+          <p style={{ color: "green", fontWeight: "bolder" }}>
+            Notification sent successfully
+          </p>
+        )}
       </div>
       <div className="delivery-notification-box">
         <h3>Delivery Boy Notification's</h3>
@@ -128,20 +266,35 @@ const NotificationForm = () => {
             <p>:</p>
           </div>
           <div className="right-msg">
-            <select onChange={(e) => handleDeliverySelection(e)}>
-              <option value="all">All Users</option>
-              {deliveryData && deliveryData[0] && deliveryData[0].map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.fullname}
-                </option>
-              ))}
+            <select onChange={(e) => handleBoySelection(e)}>
+              <option value="all">All Boys</option>
+              {deliveryData &&
+                deliveryData[0] &&
+                deliveryData[0].map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.fullname}
+                  </option>
+                ))}
             </select>
-
-            <input type="text" placeholder="Title" />
-            <textarea placeholder="Message" />
+            <input
+              type="text"
+              placeholder="Title"
+              value={notificationDataforBoy.title}
+              onChange={handleTitleChangeForBoy}
+            />
+            <textarea
+              placeholder="Message"
+              value={notificationDataforBoy.message}
+              onChange={handleMessageChangeForBoy}
+            />
           </div>
         </div>
-        <button>Submit</button>
+        <button onClick={handleSubmitForBoy}>Submit</button>
+        {notificationSentforBoy && (
+          <p style={{ color: "orange", fontWeight: "bolder" }}>
+            Notification sent successfully
+          </p>
+        )}
       </div>
     </div>
   );
