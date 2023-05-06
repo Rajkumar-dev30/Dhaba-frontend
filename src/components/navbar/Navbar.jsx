@@ -56,6 +56,11 @@ const Navbar = ({ type }) => {
         name: "Privacy Policy",
       };
       break;
+      case "notifications":
+      head = {
+        name: "Notifications",
+      };
+      break;
     default:
       break;
   }

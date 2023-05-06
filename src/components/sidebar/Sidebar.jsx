@@ -9,6 +9,7 @@ import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import InfoIcon from '@mui/icons-material/Info';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import { SideBarContext } from "../../Contex/SidebarContext";
 
@@ -71,6 +72,10 @@ const Sidebar = () => {
           <NavLink style={Styles} to="/admin/orders">
             <abbr title="Orders"> <FastfoodIcon /></abbr>
             <h3 className={Close ? "open" : "close"}>Orders</h3>
+          </NavLink>
+          <NavLink style={Styles} to="/admin/notification">
+            <abbr title="Notifications"> <NotificationsActiveIcon /></abbr>
+            <h3 className={Close ? "open" : "close"}>Notifications</h3>
           </NavLink>
           <NavLink style={Styles} to="/admin/aboutus">
             <abbr title="About Us"><InfoIcon /></abbr>

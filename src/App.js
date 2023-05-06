@@ -11,6 +11,7 @@ import DeliveryBoy from "./pages/Admin/DeliveryBoy/DeliveryBoy";
 import Order from "./pages/Admin/Orders/Order";
 import AddAboutUs from "./pages/Admin/AboutUs/AddAboutUs";
 import PrivacyPolicy from "./pages/Admin/PrivacyPolicy/PrivacyPolicy";
+import Notification from "./pages/Admin/Notifications/Notification";
 function App() {
   return (
     <>
@@ -27,6 +28,7 @@ function App() {
             <Route path="orders" element={<Order />} />
             <Route path="aboutus" element={<AddAboutUs />} />
             <Route path="privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="notification" element={<Notification/>}/>
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
