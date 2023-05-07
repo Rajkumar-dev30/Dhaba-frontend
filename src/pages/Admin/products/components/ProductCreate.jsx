@@ -26,7 +26,7 @@ const ProducCreate = () => {
   const [exclusive, setExclusive] = useState(true);
   const [loading, setLoading] = useState(false)
   // table pagination
-  const [postperPage, setPostperPage] = useState(5);
+  const [postperPage, setPostperPage] = useState(6);
   const [total, setTotal] = useState("");
   const [page, setpage] = useState(1);
 

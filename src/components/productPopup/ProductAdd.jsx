@@ -80,13 +80,11 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
     } finally {
       setLoading(false);
       handleCloseModal2();
-      getProducts();
     }
   };
 
   const handleClose = () => {
     handleCloseModal2();
-    getProducts();
   };
   useEffect(() => {
     getProducts();
@@ -96,7 +94,7 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
     <>
       {loading ? <Popup /> : <div className="product-model">
         <div className="edit-form">
-          <h1>Create Product</h1>
+          <h1 >Create Product</h1>
           <div className="edit-style">
             <div className="left-edit">
               <label htmlFor="product-name">Product Name :</label>
@@ -108,18 +106,22 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
             </div>
             <div className="right-edit">
               <input
+              style={{fontSize:"18px"}}
                 type="text"
-                id="product-name"xx 
+                id="product-name"
                 value={productName}
                 placeholder={productData.productName}
                 onChange={handleProductNameChange}
               />
               <input
+                style={{fontSize:"15px"}}
                 type="file"
                 id="product-image"
                 onChange={handleAvatarChange}
               />
               <input
+              
+                style={{fontSize:"18px"}}
                 type="text"
                 id="product-description"
                 value={description}
@@ -127,6 +129,7 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
                 onChange={handleDescriptionChange}
               />
               <input
+                style={{fontSize:"18px"}}
                 type="text"
                 id="product-price"
                 value={price}
@@ -134,12 +137,14 @@ const ProductAdd = ({ handleCloseModal2, getProducts }) => {
                 onChange={handlePriceChange}
               />
               <input
+                style={{fontSize:"18px"}}
                 type="text"
                 id="product-categoryId"
                 value={productData.categoryId}
                 onChange={handlecategoryIdChange}
               />
               <input
+                style={{fontSize:"18px"}}
                 type="text"
                 id="product-food-type"
                 value={foodType}

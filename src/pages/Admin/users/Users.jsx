@@ -7,7 +7,7 @@ import CreateUser from "./Components/CreateUser";
 const Users = () => {
   return (
     <div className="user-alignments">
-      <div className="left">
+      <div className="left" style={{height:"100vh"}}>
         <Sidebar />
       </div>
       <div className="right">

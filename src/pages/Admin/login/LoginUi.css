@@ -5,32 +5,29 @@
   display: flex;
   width: 100%;
   height: 100vh;
-  background-color: #e1e3eb;
+}
+.main .img {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  position: relative;
 }
 .sub-main {
+  position: absolute;
   display: flex;
   justify-content: center;
-  height: 500px;
-  width: 34%;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-  padding-top: 30px;
-  border-radius: 40px;
-  background-color: white;
+  width: 100%;
+  border-radius: 30px;
+}
+.admin {
+  color: white;
 }
 .imgs {
   padding-top: 20px;
   justify-content: center;
   display: flex;
 }
-.container-image {
-  background-color: rgb(223, 221, 221);
-  border-radius: 150px;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  height: 115px;
-  width: 115px;
-}
+
 .profile {
   height: 100px;
   width: 100px;
@@ -42,20 +39,35 @@
   position: absolute;
   padding: 14px 0 0 25px;
 }
-.name {
+.name,
+.Password {
+  font-weight: 600;
   text-align: center;
   font-size: 20px;
-  box-shadow: inset 0px 0px 20px 0px #888;
-  width: 300px;
+  width: 100%;
   height: 50px;
-  border-radius: 60px;
+  border-radius: 6px;
   border: none;
   outline: none;
-  background-color: #fff;
+  color: white;
+  background-color: #37383d;
+} label {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+}
+.username {
+  padding: 0.8rem 2.5rem;
+  width: 95%;
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
 }
 .eye {
   width: 50px;
-  padding-right: 40px !important;
 }
 .css-q0jhri-MuiInputBase-root-MuiInput-root:before {
   border: none !important;
@@ -68,19 +80,16 @@
   text-align: center;
   padding-left: 50px !important;
 }
-.passInp {
-  text-align: center;
-  width: 300px;
-  height: 50px;
-  border-radius: 60px;
-  box-shadow: inset 0px 0px 25px 0px #888;
-  border: none;
-  outline: none;
-  background-color: #fff;
-}
+
 .second-input {
-  padding-top: 20px;
-  text-align: center;
+  padding: 1rem 2.5rem;
+  width: 95%;
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
 }
 .error-msg {
   color: red;
@@ -89,13 +98,15 @@
   padding-top: 25px;
 }
 .login-button .log-button {
-  width: 300px;
+  width: 330px;
   height: 50px;
-  border-radius: 60px;
-  background-color: blue;
-  color: white;
+  border-radius: 6px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(6, 5, 5);
   font-size: 25px;
   border: none;
+  margin-left: 5px;
+  font-weight: 550;
   cursor: pointer;
 }
 .link {
@@ -106,11 +117,11 @@ a {
   text-decoration: none;
 }
 
-.css-1nbw9tx{
+.css-1nbw9tx {
   position: none !important;
 }
 
-.css-mnn31{
-text-align: center;
-padding-left: 1rem !important;
+.css-mnn31 {
+  text-align: center;
+  padding-left: 1rem !important;
 }

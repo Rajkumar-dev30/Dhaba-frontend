@@ -6,7 +6,7 @@ const DeliveryBoy = () => {
   return (
     
     <div className="product-alignments">
-    <div className="left">
+    <div className="left" style={{height:"100vh"}}>
       <Sidebar />
     </div>
     <div className="right">

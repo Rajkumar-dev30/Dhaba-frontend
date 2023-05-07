@@ -7,6 +7,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import "./LoginUi.css";
 import Loading from "./Loading/Loading";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // IMPORTING DIFFERENT COMPONENTS
 import { useLogin } from "../../../Hooks/useLogin";
 
@@ -36,28 +38,36 @@ const LoginUi = () => {
       navigate("/admin/dashboard");
     } else {
       setLogError(error);
+      toast.error('Incorrect Password', {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setLoading(false)
     }
   };
 
   return (
     <>
       {
-        loading ?<Loading/> : <div className="main">
+        loading ? <Loading /> : <div className="main">
+          <img className='img' src="https://1.bp.blogspot.com/-AmlaA5-BQmQ/YT_QITzWOLI/AAAAAAAABjE/j9Yct6PNC6Mvx8yIy0pOm18rRi9cXZKswCLcBGAsYHQ/s0/Screenshot%2B%2528575%2529%2B%25285%2529.jpg" alt="" />
           <div className="sub-main">
-            <div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+              <h1 className="admin">Admin Login</h1>
               <div className="imgs">
-                <div className="container-image">
-                  <img
-                    src={require("../../../assets/king dhaba admin logo.png")}
-                    alt="profile"
-                    className="profile"
-                  />
-                </div>
+
               </div>
               <div>
-                <h1>Admin</h1>
+
                 <br />
-                <div>
+                <div className="username">
+                  <label htmlFor="">UserName</label>
                   <input
                     type="text"
                     placeholder="userId"
@@ -69,21 +79,22 @@ const LoginUi = () => {
                   />
                 </div>
                 <div className="second-input">
+                  <label htmlFor="">Password</label>
                   <Input
-                    className="name"
+                    style={{ color: "white" }}
+                    className="Password"
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={loginDetails.password}
                     onChange={handleChange}
-                    placeholder="password"
+                    required
                     endAdornment={
-                      <InputAdornment position="end">
+                      <InputAdornment >
                         <IconButton
+                          style={{ color: "white" }}
                           className="eye"
                           onClick={() => setShowPassword(!showPassword)}
-                          onMouseDown={(event) => event.preventDefault()}
-                          edge="end"
-                        >
+                          onMouseDown={(event) => event.preventDefault()}>
                           {showPassword ? (
                             <VisibilityIcon />
                           ) : (
@@ -93,17 +104,24 @@ const LoginUi = () => {
                       </InputAdornment>
                     }
                   />
-                </div>
-                {logError && <div style={{ color: "red" }}>{logError}</div>}
-
-                <div className="login-button">
-                  <button className="log-button" onClick={handleSubmit}>
-                    {
-                      loading ? "Loading..." : <button className="log-button" onClick={handleSubmit}>
-                        Login
-                      </button>
-                    }
-                  </button>
+                  <div className="login-button">
+                    <button className="log-button" onClick={handleSubmit}>
+                      Login
+                    </button>
+                  </div>
+                  {logError && <div style={{ color: "red", textTransform: "capitalize", textAlign: "center" }}></div>}
+                  <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                  />
                 </div>
               </div>
             </div>

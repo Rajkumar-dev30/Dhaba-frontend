@@ -1,9 +1,13 @@
 import axios from "axios";
 import { React, useState, useEffect } from "react";
 import { FaRegUser } from "react-icons/fa";
-import { BiCategoryAlt } from "react-icons/bi";
+import { BiCategoryAlt,BiDish } from "react-icons/bi";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import { IoAppsOutline, IoFastFoodOutline } from "react-icons/io5";
+import { MdOutlineDeliveryDining,MdOutlineNotificationsActive } from "react-icons/md";
+import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+
+
 import "../dashboard.scss";
 // import OrderApi from '../../Orders/Components/OrderApi'
 import { NavLink } from "react-router-dom";
@@ -15,7 +19,10 @@ const DashboardData = () => {
   const [categoryLength, setCategoryLength] = useState("");
   const [productLength, setProductLength] = useState("");
   const [orderLength, setOrderLength] = useState("")
-  // const [orderlength,setOrderlength]=useState(OrderApi.length)
+  const [deliveryBoy, setDeliveryBoy] = useState("")
+  const [dBoyLength, setDBoyLength] = useState("")
+  const [exclusive, setExclusive] = useState("")
+  const [exclusiveLength, setExclusiveLength] = useState("")
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
 
@@ -77,21 +84,55 @@ const DashboardData = () => {
     }
   };
 
+  const getDeliveryPersons = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/admin/allDeliveryBoys`,
+          config
+        );
+        const offData = response.data;
+        const fullData = offData.response;
+  
+        setDeliveryBoy(fullData);
+  
+        if (fullData.length > 0) {
+          const nestedArray = fullData[0];
+          const length = nestedArray.length;
+          setDBoyLength(length);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+  };
+
+  const getExclusiveProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/product/exclusive-dishes `
+      );
+      const offData = response.data;
+      const fullData = offData.products;
+      setExclusive(fullData);
+      if (fullData.length > 0) {
+        const length = fullData.length;
+        setExclusiveLength(length);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
 
   useEffect(() => {
     getUsers();
     getCategories();
     getProducts();
+    getDeliveryPersons();
+    getExclusiveProducts();
   }, []);
 
   const data = [
-    {
-      head: "Total Users",
-      length: userLength,
-      logo: <FaRegUser size={70} opacity=".3" />,
-      color: "#17A2B8",
-      path: "/admin/users",
-    },
     {
       head: "Total Categories",
       length: categoryLength,
@@ -107,12 +148,42 @@ const DashboardData = () => {
       path: "/admin/products",
     },
     {
+      head: "Total Users",
+      length: userLength,
+      logo: <FaRegUser size={70} opacity=".3" />,
+      color: "#17A2B8",
+      path: "/admin/users",
+    },
+    {
+      head: "Exclusive Dishes",
+      length: exclusiveLength,
+      logo: <BiDish size={70} opacity=".3" />,
+      color: "purple",
+      path:"/admin/deals"
+    },
+    
+    {
       head: "Total Orders",
       length: orderLength,
       logo: <IoFastFoodOutline size={70} opacity=".3" />,
       color: "#DC3545",
       path:"/admin/orders"
     },
+    {
+      head: "Delivery Boys",
+      length: dBoyLength,
+      logo: <MdOutlineDeliveryDining size={70} opacity=".3" />,
+      color: "lightpink",
+      path:"/admin/deliveryboy"
+    },
+    {
+      head: "Notifications",
+      // length: exclusiveLength,
+      logo: <MdOutlineNotificationsActive size={70} opacity=".3" />,
+      color: "burlywood",
+      path:"/admin/notification"
+    },
+    
 
   ];
   const [shake, setshake] = useState(true);

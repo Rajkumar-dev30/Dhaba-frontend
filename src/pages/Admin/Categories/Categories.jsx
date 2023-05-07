@@ -9,7 +9,7 @@ import CategoriesList from "./components/CreateCategory";
 const Categories = () => {
   return (
     <div className="categories-alignments">
-      <div className="left">
+      <div className="left" style={{height:"100vh"}}>
         <Sidebar />
       </div>
       <div className="right">

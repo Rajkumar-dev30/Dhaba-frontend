@@ -88,8 +88,6 @@ const CompleteOrder = () => {
     }
   };
 
-  
-
   useEffect(() => {
     getusers();
     getDeliveryPersons();
@@ -97,20 +95,79 @@ const CompleteOrder = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 10 }}>
-        <button value="all" onClick={handleFilterChange}>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}
+      >
+        <button
+          value="all"
+          onClick={handleFilterChange}
+          style={{
+            backgroundColor: "#333",
+            color: "#fff",
+            margin: 10,
+            padding: "10px 20px",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+          }}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = "#777")}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = "#333")}
+        >
           All Orders
         </button>
-        <button value="ordered" onClick={handleFilterChange}>
+        <button
+          value="ordered"
+          onClick={handleFilterChange}
+          style={{
+            backgroundColor: "green",
+            color: "#fff",
+            margin: 10,
+            padding: "10px 20px",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+          }}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = "lightgreen")}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = "green")}
+        >
           Ordered
         </button>
-        <button value="Self-pickup" onClick={handleFilterChange}>
+        <button
+          value="Self-pickup"
+          onClick={handleFilterChange}
+          style={{
+            backgroundColor: "#0000FF",
+            color: "#fff",
+            margin: 10,
+            padding: "10px 20px",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+          }}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = "#5555FF")}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = "#0000FF")}
+        >
           Self Pickup
         </button>
-        <button value="canceled" onClick={handleFilterChange}>
+        <button
+          value="canceled"
+          onClick={handleFilterChange}
+          style={{
+            backgroundColor: "red",
+            color: "#fff",
+            margin:10,
+            padding: "10px 20px",
+            border: "none",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+          }}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = "lightred")}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = "red")}
+        >
           Canceled
         </button>
       </div>
+
       <TableContainer>
         <Table>
           <TableHead>
@@ -150,10 +207,10 @@ const CompleteOrder = () => {
           <TableBody>
             {userData
               .sort((a, b) => {
-              const dateA = new Date(a.createdAt);
-              const dateB = new Date(b.createdAt);
-              return dateB.getTime() - dateA.getTime();
-            })
+                const dateA = new Date(a.createdAt);
+                const dateB = new Date(b.createdAt);
+                return dateB.getTime() - dateA.getTime();
+              })
               .filter((item) => {
                 if (filter === "all") {
                   return true;
