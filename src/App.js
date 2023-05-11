@@ -15,6 +15,7 @@ import Notification from "./pages/Admin/Notifications/Notification";
 function App() {
   return (
     <>
+    {/* routes calling */}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginUi />} />
