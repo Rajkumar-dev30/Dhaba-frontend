@@ -14,10 +14,11 @@ const NotificationForm = () => {
   const [selectedBoy, setSelectedBoy] = useState(null);
   const [notificationDataforBoy, setNotificationDataforBoy] = useState({
     title: "",
-    message: "",
+    order: "",
   });
   const [notificationSentforBoy, setNotificationSentforBoy] = useState(false);
-
+  const [ordersData, setOrdersData] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const userToken = JSON.parse(localStorage.getItem("user"));
   const { token } = userToken;
 
@@ -51,7 +52,16 @@ const NotificationForm = () => {
       const offData = response.data;
       const fullData = offData.response;
       setDeliveryData(fullData);
-      console.log(deliveryData);
+
+      if (fullData.length > 0) {
+        const selectedBoy = fullData[0]._id;
+        setSelectedBoy(selectedBoy);
+        const ordersResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/delivery/get-orders/${selectedBoy}`
+        );
+        const orders = ordersResponse.data.response;
+        setOrdersData(orders);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -68,15 +78,26 @@ const NotificationForm = () => {
     }
   };
 
-  const handleBoySelection = (event) => {
+  const handleBoySelection = async (event) => {
     const selectedValue = event.target.value;
     if (selectedValue === "allBoys") {
       setSelectedBoy(null);
+      setOrdersData([]);
     } else {
       const selectedBoy = deliveryData[0].find(
         (item) => item._id === selectedValue
       );
-      setSelectedBoy(selectedBoy);
+      setSelectedBoy(selectedBoy._id);
+
+      try {
+        const ordersResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/delivery/get-orders/${selectedBoy._id}`
+        );
+        const orders = ordersResponse.data.response;
+        setOrdersData(orders);
+      } catch (error) {
+        console.log("Error:", error.message);
+      }
     }
   };
 
@@ -102,7 +123,7 @@ const NotificationForm = () => {
   const handleMessageChangeForBoy = (event) => {
     setNotificationDataforBoy((prevData) => ({
       ...prevData,
-      message: event.target.value,
+      order: event.target.value,
     }));
   };
   const handleSubmit = async () => {
@@ -153,26 +174,96 @@ const NotificationForm = () => {
     }
   };
 
+
+  // const handleSubmitForBoy = async () => {
+  //   if (!selectedBoy && deliveryData.length === 0) {
+  //     alert("No delivery boys available");
+  //     return;
+  //   }
+
+  //   // if (
+  //   //   notificationDataforBoy.title === "" ||
+  //   //   notificationDataforBoy.order === ""
+  //   // ) {
+  //   //   alert("Please enter a title and order");
+  //   //   return;
+  //   // }
+
+  //   if (!selectedOrder) {
+  //     alert("Please select an order");
+  //     return;
+  //   }
+
+  //   const requestDataforBoy = {
+  //     deliveryBoyId: selectedBoy ? selectedBoy._id : "allBoys",
+  //     title: notificationDataforBoy.title,
+  //     order: selectedOrder ?  {selectedOrder.map((order) => (
+  //       <option key={order.cartId} value={order.cartId}>
+  //         {order.products.map((item) => (
+  //           <span key={item.productName}>
+  //             {item.productName} X {item.quantity} 
+  //           </span>
+  //         ))}
+  //       </option>
+  //     ))}:null
+  //   };
+
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.REACT_APP_API_URL}/admin/send-notification-deliveryBoy`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json", // Update the content type to JSON
+  //         },
+  //         body: JSON.stringify(requestDataforBoy), // Convert the requestData object to JSON string
+  //       }
+  //     );
+
+  //     const data = await response.json(); // Parse the response body as JSON
+
+  //     console.log(data);
+  //     if (response.ok) {
+  //       setNotificationSentforBoy(true);
+  //       setSelectedBoy(null);
+  //       setSelectedOrder(null);
+  //       setNotificationDataforBoy({
+  //         title: "",
+  //         order: "",
+  //       });
+  //     } else {
+  //       setNotificationSentforBoy(false);
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
+
   const handleSubmitForBoy = async () => {
     if (!selectedBoy && deliveryData.length === 0) {
       alert("No delivery boys available");
       return;
     }
-
-    if (
-      notificationDataforBoy.title === "" ||
-      notificationDataforBoy.message === ""
-    ) {
-      alert("Please enter a title and message");
+    if (!selectedOrder) {
+      alert("Please select an order");
       return;
     }
-
+  
+    const selectedOrderDetails = ordersData.find(
+      (order) => order.cartId === selectedOrder
+    );
+  
+    const orderItems = selectedOrderDetails.products.map(
+      (item) => `${item.productName} X ${item.quantity}`
+    );
+  
     const requestDataforBoy = {
-      deliveryBoyId: selectedBoy ? selectedBoy._id : "allBoys",
+      deliveryBoyId: selectedBoy ? selectedBoy : "allBoys",
       title: notificationDataforBoy.title,
-      message: notificationDataforBoy.message,
+      order: orderItems.join(", "),
     };
-
+  
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/admin/send-notification-deliveryBoy`,
@@ -180,21 +271,22 @@ const NotificationForm = () => {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json", // Update the content type to JSON
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(requestDataforBoy), // Convert the requestData object to JSON string
+          body: JSON.stringify(requestDataforBoy),
         }
       );
-
-      const data = await response.json(); // Parse the response body as JSON
-
+  
+      const data = await response.json();
       console.log(data);
+  
       if (response.ok) {
         setNotificationSentforBoy(true);
         setSelectedBoy(null);
+        setSelectedOrder(null);
         setNotificationDataforBoy({
           title: "",
-          message: "",
+          order: "",
         });
       } else {
         setNotificationSentforBoy(false);
@@ -203,10 +295,13 @@ const NotificationForm = () => {
       console.log(error.message);
     }
   };
+  
+  
 
   useEffect(() => {
     getUsers();
     getDeliveryBoys();
+    // deliveryBoyOrders();
   }, []);
   return (
     <div className="notifications-box">
@@ -254,7 +349,7 @@ const NotificationForm = () => {
       </div>
       <div className="delivery-notification-box">
         <h3>Delivery Boy Notification's</h3>
-        <div className="delivery-notification-form">
+        {/* <div className="delivery-notification-form">
           <div className="left-msg">
             <p>Select user</p>
             <p>Title</p>
@@ -287,6 +382,48 @@ const NotificationForm = () => {
               value={notificationDataforBoy.message}
               onChange={handleMessageChangeForBoy}
             />
+          </div>
+        </div> */}
+        <div className="delivery-notification-form">
+          <div className="left-msg">
+            <p>Select delivery boy</p>
+            <p>Title</p>
+            <p>Order</p>
+          </div>
+          <div className="middle-msg">
+            <p>:</p>
+            <p>:</p>
+            <p>:</p>
+          </div>
+          <div className="right-msg">
+            <select onChange={(e) => handleBoySelection(e)}>
+              <option value="allBoys">All Boys</option>
+              {deliveryData &&
+                deliveryData[0] &&
+                deliveryData[0].map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.fullname}
+                  </option>
+                ))}
+            </select>
+            <input
+              type="text"
+              placeholder="Title"
+              value={notificationDataforBoy.title}
+              onChange={handleTitleChangeForBoy}
+            />
+            <select onChange={(e) => setSelectedOrder(e.target.value)}>
+              <option value="">Select Order</option>
+              {ordersData.map((order) => (
+                <option key={order.cartId} value={order.cartId}>
+                  {order.products.map((item) => (
+                    <span key={item.productName}>
+                      {item.productName} X {item.quantity} 
+                    </span>
+                  ))}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <button onClick={handleSubmitForBoy}>Submit</button>

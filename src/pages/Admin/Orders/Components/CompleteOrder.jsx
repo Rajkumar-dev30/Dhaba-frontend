@@ -193,6 +193,9 @@ const CompleteOrder = () => {
               <TableCell style={header} align="center">
                 Created At
               </TableCell>
+              {/* <TableCell style={header} align="center">
+                Updated At
+              </TableCell> */}
               <TableCell style={header} align="center">
                 Transaction Id
               </TableCell>
@@ -267,6 +270,18 @@ const CompleteOrder = () => {
                         hour12: "true",
                       })}
                     </TableCell>
+                    {/* <TableCell align="center">
+                      {new Date(order.updatedAt).toLocaleString("en-IN", {
+                        timeZone: "Asia/Kolkata",
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        second: "numeric",
+                        hour12: "true",
+                      })}
+                    </TableCell> */}
                     <TableCell align="center">{order.transactionId}</TableCell>
                     <TableCell align="center">{order.ReceivedAmount}</TableCell>
                     <TableCell align="center">
@@ -287,7 +302,7 @@ const CompleteOrder = () => {
                         >
                           <option value="">Assign Delivery Boy</option>
                           {deliveryBoy &&
-                            deliveryBoy[0].map((db) => {
+                            deliveryBoy.map((db) => {
                               return (
                                 <option key={db._id} value={db._id.toString()}>
                                   {db.fullname}
